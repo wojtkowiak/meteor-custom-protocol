@@ -226,6 +226,7 @@ Please also regenerate the docs running `gulp docs`.
 ### Examples
 
 Here I will keep track of other packages using custom protocols so you can take a look how somebody is using it.
+
 [meteor-transfer-rate-monitor](https://github.com/wojtkowiak/meteor-transfer-rate-monitor/blob/master/src/lib/TransferRate.protocol.js)
 
 ### Tests
