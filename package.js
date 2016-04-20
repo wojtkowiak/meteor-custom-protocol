@@ -24,7 +24,7 @@ Package.onUse(function onUse(api) {
     api.use('isobuild:compiler-plugin@1.0.0');
     api.use('ecmascript');
     api.use('underscore');
-    api.use('omega:direct-stream-access');
+    api.use('omega:direct-stream-access@3.0.0');
 
     api.addFiles([
         'src/lib/index/index.protocols.index.js',
