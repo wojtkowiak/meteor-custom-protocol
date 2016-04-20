@@ -2,7 +2,7 @@ Package.describe({
     name: 'omega:custom-protocol',
     version: '1.0.0',
     summary: 'Send custom data on the Meteor\'s defaults websocket connection.',
-    git: '',
+    git: 'https://github.com/wojtkowiak/meteor-custom-protocol',
     documentation: 'README.md'
 });
 
