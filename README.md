@@ -60,7 +60,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
     }
     ```
 
-2. Save this file with an `.protocol.js` extension (see why).
+2. Save this file with an `.protocol.js` extension ([see why](https://github.com/wojtkowiak/meteor-custom-protocol#why-do-i-need-to-use-protocoljs-extension-for-my-protocols)).
 3. Register your protocol and register at least one message. `registerProtocol` will register messages for you.
 
     ```javascript
@@ -83,7 +83,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
             this.registerMessage(this.MY_MESSAGE, { /*definition object*/ });
          }
     ```
-    What is the definition object - check here.
+    What is the definition object - [check here](https://github.com/wojtkowiak/meteor-custom-protocol#what-is-the---definition-object).
 
 4. Create `encode` / `decode` methods:
 
@@ -97,7 +97,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
             return JSON.parse(rawMessage);
         }
     ```
-    What is the definition - check here.
+    What is the definition - [check here](https://github.com/wojtkowiak/meteor-custom-protocol#what-is-the---definition-object).
 
 5. Use it:
 
@@ -115,7 +115,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
     protocol.on(protocol.MY_MESSAGE, (data, sessionId) => { console.log(data) });
     ```
     
-If you want to send different data and receive them on different callback you have to declare a message for each of them or create a dynamic messages type protocol - check out below. 
+If you want to send different data and receive them on different callback you have to declare a message for each of them or create a dynamic messages type protocol - [check out below](https://github.com/wojtkowiak/meteor-custom-protocol#protocol-types---declared-or-dynamic-messages). 
     
 ### Where I can get the session id(s) I want to send to?
     
@@ -207,10 +207,15 @@ However if you will remove the file, do a build, add the file again, do the buil
 ## CustomProtocol API
 
 Full API documentation if you need it :smile:.
+
 Client and server only differ on send method definition.
+
 [Client API](CLIENT.md)
+
 [Server API](SERVER.md)
+
 You can also check:
+
 [DynamicMessagesProtocol API](DYNAMIC_MESSAGES_PROTOCOL.md)
 
 ## Contributing
