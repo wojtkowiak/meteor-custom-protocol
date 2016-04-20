@@ -156,11 +156,11 @@ If you would like me to make some utils to ease this a little, file an issue and
     
 It is just a place to store some information used by your encode/decode methods. For example you could do a lame object values to string serializer like this:
 
-```
+```javascript
 // in the constrcutor of your protocol define a message with a definition object.
 this._messages[0] = { fields: [ 'field1', 'field2' ]};
 ```
-```
+```javascript
 encode(messageId, definition, payload = []}) {
     let data = payload[0];
     let encodedMessage = '';
@@ -186,7 +186,7 @@ decode(messageId, definiton, rawMessage) {
 Protocols with declared messages look like the one in the tutorial. The main rule is that all the messages are defined in the constructor. Ids should be integeres and they can also have the definition object attached.
 If you do not want to declare messages in the constructor you can just extend `DynamicMessagesProtocol` instead of `CustomProtocol` and get some more flexibility.
 Now you can send any message you like at any time. Additionally now you can use strings as the message id in `send`:
-```
+```javascript
 protocol.send('my message id', { data });
 ```
 Your `encode`/`decode` methods will always get 0 as the `messageId` and definition object of course will be empty.
