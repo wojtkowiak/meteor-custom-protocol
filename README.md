@@ -4,10 +4,10 @@ Super easy way of sending something else than DDP over default Meteor socket con
 
 ### Wait, why?
 
-In many cases when you want to send some volatile data, Meteor's normal way of sending data through either publications or methods might seem like an overkill.
-Imagine for example a chat in which you do not want to store the history. It would be nice if you could just send and receive some data on both server and client without using local collections or methods.
-Other packages like *streamy* or *meteor-streams* are already giving you nice API for that, but inside they are still passing data using Meteor's API. That of course is not a problem until performance and flexibility matters.
-This package was made to not only give you direct access to the socket but also to give some basic way to structure and define you data flow. What is most important you can encode your data however you want, there is no need to use Json.
+In many cases when you want to send some volatile data, Meteor's normal way of sending data through either publications or methods might seem like an overkill.  
+Imagine for example a chat in which you do not want to store the history. It would be nice if you could just send and receive some data on both server and client without using local collections or methods.  
+Other packages like *streamy* or *meteor-streams* are already giving you nice API for that, but inside they are still passing data using Meteor's API. That of course is not a problem until performance and flexibility matters.  
+This package was made to not only give you direct access to the socket but also to give some basic way to structure and define you data flow. What is most important you can encode your data however you want, there is no need to use Json.  
 To send the data directly on the default Meteor connection this package uses the [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) which also ensures that any custom message will not interfere with Meteor's DDP protocol.  
  
 ### Installation
@@ -34,7 +34,7 @@ Sending:
 // On the client
 protocol.send('myMessage', { myData: 'to send' });
 
-// On the server you need to specify a Meteor session id you want to send to
+// On the server you need to specify a Meteor session id (or array of them) you want to send to
 protocol.send('myMessage', { myData: 'to send' }, 'as3ijnso03sw');
 
 ```
@@ -183,44 +183,40 @@ decode(messageId, definiton, rawMessage) {
     
 ### Protocol types - Declared or Dynamic messages
 
-Protocols with declared messages look like the one in the tutorial. The main rule is that all the messages are defined in the constructor. Ids should be integeres and they can also have the definition object attached.
-If you do not want to declare messages in the constructor you can just extend `DynamicMessagesProtocol` instead of `CustomProtocol` and get some more flexibility.
+Protocols with declared messages look like the one in the tutorial. The main rule is that all the messages are defined in the constructor. Ids should be integeres and they can also have the definition object attached.  
+If you do not want to declare messages in the constructor you can just extend `DynamicMessagesProtocol` instead of `CustomProtocol` and get some more flexibility.  
 Now you can send any message you like at any time. Additionally now you can use strings as the message id in `send`:
 ```javascript
 protocol.send('my message id', { data });
 ```
-Your `encode`/`decode` methods will always get 0 as the `messageId` and definition object of course will be empty.
-The only enforcement is that the object returned from your `decode` method, must have a field which says what message id that is. That is used internally to fire the appropriate callback set with `protocol.on('my message id', (data) => {});`.
-By default the field name is `__type`. You can change the field name to something else by invoking `this.setTypeField('another field name');` in your protocol constructor.
-You should also take care of ensuring that your protocol will be a singleton (see why below).
-The provided in this package `JsonProtocol` is a simple dynamic messages protocol example. 
+Your `encode`/`decode` methods will always get 0 as the `messageId` and definition object of course will be empty.  
+The only enforcement is that the object returned from your `decode` method, must have a field which says what message id that is. That is used internally to fire the appropriate callback set with `protocol.on('my message id', (data) => {});`.  
+By default the field name is `__type`. You can change the field name to something else by invoking `this.setTypeField('another field name');` in your protocol constructor.  
+You should also take care of ensuring that your protocol will be a singleton (see why below).  
+The provided in this package `JsonProtocol` is a simple dynamic messages protocol example.   
 
 ### Why do I need to use `protocol.js` extension for my protocols.
 
-Every protocol file is index and assigned with an unique id in your app. 
-Because your app can use many protocols at the same time, internally they are distinguished by the id which is transmitted in the first bits of the message.
+Every protocol file is index and assigned with an unique id in your app.  
+Because your app can use many protocols at the same time, internally they are distinguished by the id which is transmitted in the first bits of the message.  
 The index is saved in `private/custom_protocols_index.json` in your app dir. **You should include that file in your repo.**
-Please do not modify it unless you know what you are doing. Changing a protocol id when you have your app released will make your server backwards incompatible.
-Protocols are index on every build. Once you add the file with `protocol.js` to your project, after first build it will get the id and it is guaranteed that it will not change.
+Please do not modify it unless you know what you are doing. Changing a protocol id when you have your app released will make your server backwards incompatible.  
+If you noticed the `Linted your app. No linting errors.` message that appears after adding this packaged you can just ignore it. It is because the indexer is built as a linter build plugin.  
+Protocols are indexed on every build. Once you add the file with `protocol.js` to your project, after first build/run it will get the id and it is guaranteed that it will not change.  
 However if you will remove the file, do a build, add the file again, do the build - it might not get the same id it had before - be aware of that!
 
 ## CustomProtocol API
 
-Full API documentation if you need it :smile:.
-
-Client and server only differ on send method definition.
-
-[Client API](CLIENT.md)
-
-[Server API](SERVER.md)
-
-You can also check:
-
+Full API documentation if you need it :smile:.  
+Client and server only differ on send method definition.  
+[Client API](CLIENT.md)  
+[Server API](SERVER.md)  
+You can also check:  
 [DynamicMessagesProtocol API](DYNAMIC_MESSAGES_PROTOCOL.md)
 
 ## Contributing
 
-If you discovered a bug please file an issue. PR are always welcome, but be sure to run and update the tests.
+If you discovered a bug please file an issue. PR are always welcome, but be sure to run and update the tests.  
 Please also regenerate the docs running `gulp docs`.
 
 ### Examples
@@ -231,7 +227,7 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Tests
 
-This package is fully tested and so is the used [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.
+This package is fully tested and so is the used   [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  
 To run the tests, being inside the meteor project that uses this package type:
 
 `meteor test-packages --driver-package=practicalmeteor:mocha omega:custom-protocols`
