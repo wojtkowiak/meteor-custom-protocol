@@ -1,6 +1,6 @@
 ## Meteor Custom Protocols
 
-Super easy way of sending something else than DDP over default Meteor socket connection. Just make your own protocol (or use JsonProtocol) and voila.
+Super easy way of sending something else than DDP over default Meteor socket connection. Just make your own protocol (or use [JsonProtocol](https://github.com/wojtkowiak/meteor-custom-protocol/blob/master/README.md#using-jsonprotocol)) and voila.
 
 ### Wait, why?
 
