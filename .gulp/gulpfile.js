@@ -12,19 +12,19 @@ gulp.task('docs', function docs() {
     var options = {
         private: false,
         'heading-depth': 3,
-        templateSrc: fs.readFileSync('./templates/api.hbs', 'utf8')
+        templateSrc: fs.readFileSync('../templates/api.hbs', 'utf8')
     };
     var apiDocs = {
         'api/CLIENT.md': {
-            src: 'src/**/!(*.server.js)',
+            src: '../src/**/!(*.server.js)',
             className: 'CustomProtocol'
         },
         'api/SERVER.md': {
-            src: 'src/**/!(*.client.js)',
+            src: '../src/**/!(*.client.js)',
             className: 'CustomProtocol'
         },
         'api/DYNAMIC_MESSAGES_PROTOCOL.md': {
-            src: 'src/utils/DynamicMessagesProtocol.js',
+            src: '../src/utils/DynamicMessagesProtocol.js',
             className: 'DynamicMessagesProtocol'
         }
     };
@@ -41,12 +41,12 @@ gulp.task('docs', function docs() {
             .pipe($.concat(doc))
             .pipe($.jsdocToMarkdown(runOptions))
             .on('error', error)
-            .pipe(gulp.dest('.')));
+            .pipe(gulp.dest('..')));
     });
 
     return streams;
 });
 
 gulp.task('watch', function watch() {
-    gulp.watch('**/*.{js,hbs}', ['docs']);
+    gulp.watch('../**/*.{js,hbs}', ['docs']);
 });
