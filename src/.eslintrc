@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "globals": {
+    "DDPCommon": true,
+    "CustomProtocolsIndex": true,
+    "CustomProtocolCommon": true,
+    "CustomProtocolCore": true,
+    "CustomProtocolCoreClass": true,
+    "CustomProtocol": true,
+    "CustomProtocolIndexer": true,
+    "CustomProtocolIndexReader": true,
+    "CustomProtocolError": true,
+    "DynamicMessagesProtocol": true,
+    "JsonProtocol": true
+  },
+  "rules": {
+    "indent": [ 2, 4, { "SwitchCase": 1 } ],
+    "comma-dangle": [ 0 ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "omega--custom-protocol",
+  "version": "1.0.0",
+  "dependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jsdoc-to-markdown": "^1.1.1",
+    "gulp-util": "^3.0.7",
+    "gulp-concat": "^2.6.0",
+    "gulp-load-plugins": "^1.1.0",
+    "merge-stream": "^1.0.0"
+  },
+  "scripts": {
+    "install": "npm install -g eslint-config-airbnb eslint-plugin-react eslint"
+  }
+}
