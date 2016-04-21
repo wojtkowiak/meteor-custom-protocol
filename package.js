@@ -1,6 +1,6 @@
 Package.describe({
     name: 'omega:custom-protocol',
-    version: '2.0.0',
+    version: '2.0.1',
     summary: 'Send custom data on the Meteor\'s defaults websocket connection.',
     git: 'https://github.com/wojtkowiak/meteor-custom-protocol',
     documentation: 'README.md'
@@ -20,7 +20,6 @@ Package.registerBuildPlugin({
 
 Package.onUse(function onUse(api) {
     api.versionsFrom('1.2');
-    api.use('isobuild:linter-plugin@1.0.0');
     api.use('isobuild:compiler-plugin@1.0.0');
     api.use('ecmascript');
     api.use('underscore');
