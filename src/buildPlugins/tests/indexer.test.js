@@ -76,16 +76,18 @@ describe('CustomProtocolIndexer', () => {
         });
     });
 
-    describe('#processFilesForPackage', () => {
-        function prepareFilesMock(filesCount, packageNames = [], contents = []) {
+    describe('#processFilesForTarget', () => {
+        function prepareFilesMock(filesCount, packageNames = [], names = []) {
             const files = [];
             for (let i = 1; i <= filesCount; i++) {
                 files.push({
                     getPackageName: () => packageNames[i - 1],
-                    getPathInPackage() {
-                    },
-                    getContentsAsString: sinon.stub().returns(contents[i - 1]),
-                    error: sinon.spy()
+                    getPathInPackage: () => '',
+                    getBasename: sinon.stub().returns(names[i - 1]),
+                    getContentsAsString: () => '',
+                    error: sinon.spy(),
+                    getSourceHash: () => '',
+                    addJavaScript: () => true
                 });
             }
             return files;
@@ -94,26 +96,15 @@ describe('CustomProtocolIndexer', () => {
         afterEach(() => {
             CustomProtocolIndexer.loadIndexFile.restore();
         });
-        it('should fail on file without proper class name', () => {
-            sinon.stub(CustomProtocolIndexer, 'loadIndexFile').returns({});
-            const files = prepareFilesMock(1, [''], ['']);
-            const fs = { existsSync: () => true, writeFileSync: () => true };
-            const instance = new CustomProtocolIndexer(fs);
-            instance.processFilesForPackage(files);
-            expect(files[0].getContentsAsString).to.have.been.calledOnce();
-            expect(files[0].error).to.have.been.calledWithMatch({
-                message: sinon.match('Failed to get the class name')
-            });
-        });
 
         it('should add protocol to index', () => {
             sinon.stub(CustomProtocolIndexer, 'loadIndexFile').returns({});
             const files = prepareFilesMock(1, ['package'], [
-                'class TestProtocol extends CustomProtocol'
+                'Test.protocol'
             ]);
             const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
-            instance.processFilesForPackage(files);
+            instance.processFilesForTarget(files);
             expect(fs.writeFileSync).to.have.been.calledWith(
                 './private/custom_protocols_index.json',
                 JSON.stringify(instance._index, null, 4)
@@ -128,11 +119,11 @@ describe('CustomProtocolIndexer', () => {
                 TestProtocol: { id: 1, package: 'package' }
             });
             const files = prepareFilesMock(1, ['package2'], [
-                'class TestProtocol extends CustomProtocol'
+                'Test.protocol'
             ]);
             const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
-            instance.processFilesForPackage(files);
+            instance.processFilesForTarget(files);
             expect(files[0].error).to.have.been.calledWithMatch({
                 message: sinon.match('class name is already registered')
             });
@@ -143,24 +134,39 @@ describe('CustomProtocolIndexer', () => {
                 TestProtocol: { id: 1, package: 'package' }
             });
             const files = prepareFilesMock(1, ['package'], [
-                'class NewTestProtocol extends CustomProtocol'
+                'NewTest.protocol'
             ]);
             const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
-            instance.processFilesForPackage(files);
+            instance.processFilesForTarget(files);
             expect(instance._index).not.to.include.keys('TestProtocol');
+        });
+
+        it('should remove deleted protocols from removed package', () => {
+            sinon.stub(CustomProtocolIndexer, 'loadIndexFile').returns({
+                TestProtocol: { id: 1, package: 'package' }
+            });
+            const files = prepareFilesMock(1, ['package2'], [
+                'Test2.protocol'
+            ]);
+            const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
+            const instance = new CustomProtocolIndexer(fs);
+            instance.processFilesForTarget(files);
+            console.log(instance._index);
+            expect(instance._index).not.to.include.keys('TestProtocol');
+            expect(instance._index).to.include.keys('Test2Protocol');
         });
 
         it('should create directory if not exists', () => {
             sinon.stub(CustomProtocolIndexer, 'loadIndexFile').returns({});
             const files = prepareFilesMock(1, ['package'], [
-                'class TestProtocol extends CustomProtocol'
+                'Test.protocol'
             ]);
             const fs = {
                 existsSync: () => false, mkdirSync: sinon.spy(), writeFileSync: () => {}
             };
             const instance = new CustomProtocolIndexer(fs);
-            instance.processFilesForPackage(files);
+            instance.processFilesForTarget(files);
             expect(fs.mkdirSync).to.have.been.calledWith('./private');
         });
     });

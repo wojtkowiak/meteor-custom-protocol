@@ -1,6 +1,6 @@
 Package.describe({
     name: 'omega:custom-protocol',
-    version: '1.0.1',
+    version: '2.0.0',
     summary: 'Send custom data on the Meteor\'s defaults websocket connection.',
     git: 'https://github.com/wojtkowiak/meteor-custom-protocol',
     documentation: 'README.md'
@@ -38,8 +38,11 @@ Package.onUse(function onUse(api) {
         'src/buildPlugins/indexer.js',
         'src/buildPlugins/reader.js'
     ], 'server');
-    api.addFiles('src/utils/DynamicMessagesProtocol.js');
-    api.addFiles('src/utils/Json.protocol.js');
+    api.addFiles([
+        'src/utils/DynamicMessagesProtocol.js',
+        'src/utils/Json.protocol.js',
+        'src/utils/Json.protocol'
+        ]);
     api.export('CustomProtocolCore');
     api.export('CustomProtocol');
     api.export('DynamicMessagesProtocol');

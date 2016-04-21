@@ -60,7 +60,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
     }
     ```
 
-2. Save this file with an `.protocol.js` extension ([see why](https://github.com/wojtkowiak/meteor-custom-protocol#why-do-i-need-to-use-protocoljs-extension-for-my-protocols)).
+2. Save this file as `My.protocol.js` extension and **create an empty file named `My.protocol`** ([see why](https://github.com/wojtkowiak/meteor-custom-protocol#why-do-i-need-to-create-an-empty-file)).
 3. Register your protocol and register at least one message. `registerProtocol` will register messages for you.
 
     ```javascript
@@ -195,15 +195,18 @@ By default the field name is `__type`. You can change the field name to somethin
 You should also take care of ensuring that your protocol will be a singleton (see why below).  
 The provided in this package `JsonProtocol` is a simple dynamic messages protocol example.   
 
-### Why do I need to use `protocol.js` extension for my protocols.
+### Why do I need to create an empty file
 
-Every protocol file is index and assigned with an unique id in your app.  
+Every protocol is indexed and assigned with an unique id in your app.  
 Because your app can use many protocols at the same time, internally they are distinguished by the id which is transmitted in the first bits of the message.  
-The index is saved in `private/custom_protocols_index.json` in your app dir. **You should include that file in your repo.**
+The index is saved in `private/custom_protocols_index.json` in your app dir. 
+
+**You should include that file in your repo!**
+
 Please do not modify it unless you know what you are doing. Changing a protocol id when you have your app released will make your server backwards incompatible.  
-If you noticed the `Linted your app. No linting errors.` message that appears after adding this packaged you can just ignore it. It is because the indexer is built as a linter build plugin.  
-Protocols are indexed on every build. Once you add the file with `protocol.js` to your project, after first build/run it will get the id and it is guaranteed that it will not change.  
-However if you will remove the file, do a build, add the file again, do the build - it might not get the same id it had before - be aware of that!
+Protocols are indexed on every build. Since Meteor does not allow two build plugins to handle the same file extension, I could not simple index files with `protocol.js` extension. Instead this package is indeed indexing the empty files reconstructing the class name as `xxxProtocol` from `xxx.protocol` empty file.  
+Once you add the empty file with 'My.protocol` name to your project, after first build/run `MyProtocol` will get the id and it is guaranteed that it will not change.  
+However if you will remove the `.protocol` file, do a build, add the file again, do the build - it might not get the same id it had before - be aware of that!
 
 ## CustomProtocol API
 

@@ -89,25 +89,24 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
      *
      * @param {Array} files - Array with files to process.
      */
-    processFilesForPackage(files) {
-        const packageName   = files[0].getPackageName();
-        const classNames    = [];
+    processFilesForTarget(files) {
+        const classNames = {};
         let change = false;
+        let packageName;
+        let packages = {};
 
         files.forEach((file) => {
-            const content = file.getContentsAsString();
-            let className = '';
-            try {
-                className = content.match(/class (.+) extends/g)[0].split(' ')[1];
-            } catch (err) {
-                file.error({
-                    message: 'CustomProtocolIndexer: Failed to get the class name for '
-                    + `${file.getPathInPackage()} Error: ${err.message}`
-                });
-                return;
+            //const content = file.getContentsAsString();
+            let className = file.getBasename().replace('.protocol', 'Protocol');
+            packageName = (file.getPackageName() !== null) ? file.getPackageName() : 'app';
+            packages[packageName] = true;
+
+            if (packageName in classNames) {
+                classNames[packageName].push(className);
+            } else {
+                classNames[packageName] = [ className ];
             }
 
-            classNames.push(className);
             if (!this._index[className]) {
                 const id = this.getFreeId();
                 console.info(
@@ -120,22 +119,43 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
                     const classPackage = this._index[className].package;
                     file.error({
                         message: `Trying to register ${className} protocol in ` +
-                            `${packageName !== null ? packageName : 'main'} package but this ` +
+                            `${packageName} package but this ` +
                             'class name is already registered in ' +
-                            `${classPackage !== null ? classPackage : 'main'} package.`
+                            `${classPackage} package.`
                     });
                 }
             }
+            file.addJavaScript({
+                sourcePath: file.getPathInPackage(),
+                path: file.getPathInPackage(),
+                data: file.getContentsAsString(),
+                hash: file.getSourceHash(),
+                sourceMap: null
+            });
         });
 
-        // Remove deleted protocols from the index.
-        const protocolsRegisteredInPackage = Object.keys(this._index).reduce(
+        Object.keys(packages).forEach((packageName) => {
+            // Remove deleted protocols from the index.
+            const protocolsRegisteredInPackage = Object.keys(this._index).reduce(
+                (values, key) => (
+                    this._index[key].package === packageName ? values.push(key) : null, values
+                ), []);
+
+            _.difference(protocolsRegisteredInPackage, classNames[packageName]).forEach(
+                protocol => delete this._index[protocol]
+            );
+        });
+
+        const packagesInIndex = Object.keys(this._index).reduce(
             (values, key) => (
-                this._index[key].package === packageName ? values.push(key) : null, values
-            ), []);
-        _.difference(protocolsRegisteredInPackage, classNames).forEach(
-            protocol => delete this._index[protocol]
-        );
+                values[this._index[key].package] = true, values
+            ), {});
+
+        _.difference(Object.keys(packagesInIndex), Object.keys(packages)).forEach((packageName) => {
+           Object.keys(this._index).forEach((protocol) => {
+               if (this._index[protocol].package === packageName) delete this._index[protocol];
+           })
+        });
 
         if (change) {
             if (!this._fs.existsSync('./private')) {
@@ -149,8 +169,8 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
 
 // We are registering this indexer as a linter.
 if (typeof Plugin !== 'undefined') {
-    Plugin.registerLinter(
-        { extensions: ['protocol.js'] },
+    Plugin.registerCompiler(
+        { extensions: ['protocol'] },
         () => new CustomProtocolIndexer(Plugin.fs)
     );
 }

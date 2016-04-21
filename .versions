@@ -28,7 +28,7 @@ htmljs@1.0.8
 http@1.1.4
 id-map@1.0.6
 jquery@1.11.7
-local-test:omega:custom-protocol@1.0.1
+local-test:omega:custom-protocol@2.0.0
 logging@1.0.11
 meteor@1.1.13
 minifier-js@1.1.10
@@ -39,7 +39,7 @@ mongo@1.1.6
 mongo-id@1.0.3
 npm-mongo@1.4.42
 observe-sequence@1.0.10
-omega:custom-protocol@1.0.1
+omega:custom-protocol@2.0.0
 omega:direct-stream-access@3.0.1
 omega:dirty-chai@0.0.2
 ordered-dict@1.0.6
