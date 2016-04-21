@@ -68,7 +68,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
             super();
             this.MY_MESSAGE = 1;
             this._messages[this.MY_MESSAGE_] = { /*definition object*/ };
-            this.registerProtocol();
+            this.registerProtocol('MyProtocol'); // pass your class name
          }
     ```
 
@@ -192,7 +192,7 @@ protocol.send('my message id', { data });
 Your `encode`/`decode` methods will always get 0 as the `messageId` and definition object of course will be empty.  
 The only enforcement is that the object returned from your `decode` method, must have a field which says what message id that is. That is used internally to fire the appropriate callback set with `protocol.on('my message id', (data) => {});`.  
 By default the field name is `__type`. You can change the field name to something else by invoking `this.setTypeField('another field name');` in your protocol constructor.  
-You should also take care of ensuring that your protocol will be a singleton (see why below).  
+You should also take care of ensuring that your protocol will be a singleton (see why below) and pass your class name to `super` as the `DynamicMessagesProtocol` registers the protocol for you.  
 The provided in this package `JsonProtocol` is a simple dynamic messages protocol example.   
 
 ### Why do I need to create an empty file

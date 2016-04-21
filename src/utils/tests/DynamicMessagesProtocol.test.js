@@ -20,6 +20,7 @@ describe('DynamicMessagesProtocol', () => {
 
             const stub = sinon.stub(CustomProtocolCommon.prototype, 'on');
             const TestProtocol = class TestProtocol extends DynamicMessagesProtocol {
+                constructor() { super('TestProtocol'); }
                 encode() {}
                 decode() {}
             };

@@ -12,7 +12,7 @@ JsonProtocol = class JsonProtocol extends DynamicMessagesProtocol {
 
     constructor() {
         if (instance) throw new Error('JsonProtocol is a singleton.');
-        super();
+        super('JsonProtocol');
         instance = this;
     }
 

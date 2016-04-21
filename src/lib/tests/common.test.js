@@ -8,9 +8,6 @@ describe('CustomProtocolCommon', () => {
             instance = new class TestProtocol extends CustomProtocolCommon {
             };
         });
-        it('should set id from protocols index', () => {
-            expect(instance._id).to.be.equal(3);
-        });
         it('should set default options', () => {
             expect(instance._options.messagesDefinition).to.be.equal(
                 instance.protocolTypes.DECLARED_MESSAGES
@@ -27,18 +24,18 @@ describe('CustomProtocolCommon', () => {
             stub = sinon.stub(CustomProtocolCore, 'registerProtocol');
         });
         it('should register protocol in core', () => {
-            instance.registerProtocol();
+            instance.registerProtocol('TestProtocol');
             expect(stub).to.be.calledOnce();
             expect(stub).to.be.calledWith(3, sinon.match.object, instance);
         });
         it('should thrown on id > 127', () => {
             CustomProtocolsIndex.TestProtocol = { id: 128 };
             instance = new class TestProtocol extends CustomProtocolCommon {};
-            expect(instance.registerProtocol.bind(instance)).to.throw(Error, /lower than 127/);
+            expect(instance.registerProtocol.bind(instance, 'TestProtocol')).to.throw(Error, /lower than 127/);
         });
         it('should extend options', () => {
             const options = { testField: 'test' };
-            instance.registerProtocol(options);
+            instance.registerProtocol('TestProtocol', options);
             expect(instance._options.testField).to.be.equal(options.testField);
             expect(instance._options.messagesDefinition).to.be.equal(
                 instance.protocolTypes.DECLARED_MESSAGES
@@ -49,7 +46,7 @@ describe('CustomProtocolCommon', () => {
                 messagesDefinition: instance.protocolTypes.DYNAMIC_MESSAGES
             };
             const registerMessageStub = sinon.stub(instance, 'registerMessage');
-            instance.registerProtocol(options);
+            instance.registerProtocol('TestProtocol', options);
             expect(registerMessageStub).to.be.calledOnce();
             expect(registerMessageStub).to.be.calledWith(0);
         });
@@ -60,7 +57,8 @@ describe('CustomProtocolCommon', () => {
     describe('#registerMessages', () => {
         it('should register all messages in core', () => {
             CustomProtocolsIndex.TestProtocol = { id: 3 };
-            const instance = new class TestProtocol extends CustomProtocolCommon {
+            const instance = new class TestProtocol extends CustomProtocol {
+                constructor() { super(); this.registerProtocol('TestProtocol'); }
             };
             const stub = sinon.stub(CustomProtocolCore, 'registerMessage');
             instance._messages[1] = { field: 'test1' };

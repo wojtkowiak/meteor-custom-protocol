@@ -9,15 +9,6 @@
 CustomProtocolCommon = class CustomProtocolCommon {
 
     constructor() {
-        // TODO: check if we can rely on constructor.name?
-        const protocolName = this.constructor.name;
-        if (!CustomProtocolsIndex[protocolName]) {
-            throw new Error(
-                `Protocol ${protocolName} did not receive unique id. Check if the file name is `
-                + 'in format \`<name>.protocol.js\` so that the indexer can assign an id to it.'
-            );
-        }
-        this._id = CustomProtocolsIndex[protocolName].id;
         this._messages = [];
         this._typeFieldName = null;
         this._typeObject = {};
@@ -52,9 +43,18 @@ CustomProtocolCommon = class CustomProtocolCommon {
     /**
      * Registers the protocol in core class.
      *
+     * @param {string} name    - Class name of the protocol.
      * @param {Object} options - An object with the protocol config.
      */
-    registerProtocol(options = {}) {
+    registerProtocol(name, options = {}) {
+        if (!CustomProtocolsIndex[name]) {
+            throw new Error(
+                `Protocol ${name} did not receive unique id. Check if the file name is `
+                + 'in format \`<name>.protocol.js\` so that the indexer can assign an id to it.'
+            );
+        }
+        this._id = CustomProtocolsIndex[name].id;
+
         if (this._id > 127) {
             throw new Error(
                 'Custom protocol must have an this._id lower than 127'

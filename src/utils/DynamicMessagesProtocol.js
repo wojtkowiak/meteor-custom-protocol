@@ -8,7 +8,10 @@
  */
 DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
 
-    constructor() {
+    /**
+     * @param {string} name - Class name of the protocol.
+     */
+    constructor(name) {
         super();
         if ((this.encode === undefined || typeof this.encode !== 'function') ||
             (this.decode === undefined || typeof this.decode !== 'function')) {
@@ -17,7 +20,7 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
         // This kind of protocol must have a field in the message object that identifies the message
         // type.
         this.setTypeFieldName('__type');
-        this.registerProtocol({
+        this.registerProtocol(name, {
             messagesDefinition: this.protocolTypes.DYNAMIC_MESSAGES
         });
         this._callbacks = {};

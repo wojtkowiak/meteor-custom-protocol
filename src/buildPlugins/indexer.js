@@ -161,13 +161,12 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
             if (!this._fs.existsSync('./private')) {
                 this._fs.mkdirSync('./private');
             }
-            console.log('CustomProtocolIndexer: saving', this._index);
             this._fs.writeFileSync(`./private/${indexFile}`, JSON.stringify(this._index, null, 4));
         }
     }
 };
 
-// We are registering this indexer as a linter.
+// We are registering this indexer as a compiler.
 if (typeof Plugin !== 'undefined') {
     Plugin.registerCompiler(
         { extensions: ['protocol'] },
