@@ -204,8 +204,8 @@ The index is saved in `private/custom_protocols_index.json` in your app dir.
 **You should include that file in your repo!**
 
 Please do not modify it unless you know what you are doing. Changing a protocol id when you have your app released will make your server backwards incompatible.  
-Protocols are indexed on every build. Since Meteor does not allow two build plugins to handle the same file extension, I could not simple index files with `protocol.js` extension. Instead this package is indeed indexing the empty files reconstructing the class name as `xxxProtocol` from `xxx.protocol` empty file.  
-Once you add the empty file with 'My.protocol` name to your project, after first build/run `MyProtocol` will get the id and it is guaranteed that it will not change.  
+Protocols are indexed on every build. Since Meteor does not allow two build plugins to handle the same file extension, I could not simply index files with `protocol.js` extension. Instead this package is indeed indexing the empty files reconstructing the class name as `xxxProtocol` from `xxx.protocol` empty file.  
+Once you add the empty file with `My.protocol` name to your project, after first build/run `MyProtocol` will get the id and it is guaranteed that it will not change.  
 However if you will remove the `.protocol` file, do a build, add the file again, do the build - it might not get the same id it had before - be aware of that!
 
 ## CustomProtocol API
