@@ -7,7 +7,7 @@ Super easy way of sending something else than DDP over default Meteor socket con
 In many cases when you want to send some volatile data, Meteor's normal way of sending data through either publications or methods might seem like an overkill.  
 Imagine for example a chat in which you do not want to store the history. It would be nice if you could just send and receive some data on both server and client without using local collections or methods.  
 Other packages like *streamy* or *meteor-streams* are already giving you nice API for that, but inside they are still passing data using Meteor's API. That of course is not a problem until performance and flexibility matters.  
-This package was made to not only give you direct access to the socket but also to give some basic way to structure and define you data flow. What is most important you can encode your data however you want, there is no need to use Json.  
+This package was made to not only give you direct access to the socket but also to give some basic way to structure and define your data flow. What is most important you can encode your data however you want, there is no need to use Json.  
 To send the data directly on the default Meteor connection this package uses the [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) which also ensures that any custom message will not interfere with Meteor's DDP protocol.  
  
 ### Installation
@@ -46,7 +46,7 @@ protocol.on('myMessage', (data, sessionId) => {});
 ```
 
 And that is basically it. There is just one limitation - your data object can not have a `__type` field because it is used to store your message name. 
-You can change the field name to something else by inovking `protocol.setTypeField('another field name');`.
+You can change the field name to something else by invoking `protocol.setTypeField('another field name');`.
 
 ### Creating you own protocol
 
@@ -67,7 +67,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
         constructor() {
             super();
             this.MY_MESSAGE = 1;
-            this._messages[this.MY_MESSAGE_] = { /*definition object*/ };
+            this._messages[this.MY_MESSAGE] = { /*definition object*/ };
             this.registerProtocol('MyProtocol'); // pass your class name
          }
     ```
@@ -183,7 +183,7 @@ decode(messageId, definiton, rawMessage) {
     
 ### Protocol types - Declared or Dynamic messages
 
-Protocols with declared messages look like the one in the tutorial. The main rule is that all the messages are defined in the constructor. Ids should be integeres and they can also have the definition object attached.  
+Protocols with declared messages look like the one in the tutorial. The main rule is that all the messages are defined in the constructor. Ids should be integers and they can also have the definition object attached.  
 If you do not want to declare messages in the constructor you can just extend `DynamicMessagesProtocol` instead of `CustomProtocol` and get some more flexibility.  
 Now you can send any message you like at any time. Additionally now you can use strings as the message id in `send`:
 ```javascript
