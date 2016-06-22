@@ -4,7 +4,7 @@ describe('CustomProtocolIndexer', () => {
     describe('#loadIndexFile()', () => {
         it('should load config files', () => {
             const fs = {
-                existsSync: () => true,
+                statSync: () => true,
                 readFileSync: () => JSON.stringify({ test: 'test' })
             };
 
@@ -12,14 +12,14 @@ describe('CustomProtocolIndexer', () => {
         });
         it('should return null on problem with reading', () => {
             const fs = {
-                existsSync: () => true,
+                statSync: () => true,
                 readFileSync: () => undefined
             };
             expect(CustomProtocolIndexer.loadIndexFile(fs)).to.equal(null);
         });
         it('should return empty object when index file does not exists', () => {
             const fs = {
-                existsSync: () => false
+                statSync: () => false
             };
             expect(CustomProtocolIndexer.loadIndexFile(fs)).to.deep.equal({});
         });
@@ -102,7 +102,7 @@ describe('CustomProtocolIndexer', () => {
             const files = prepareFilesMock(1, ['package'], [
                 'Test.protocol'
             ]);
-            const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
+            const fs = { statSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
             expect(fs.writeFileSync).to.have.been.calledWith(
@@ -121,7 +121,7 @@ describe('CustomProtocolIndexer', () => {
             const files = prepareFilesMock(1, ['package2'], [
                 'Test.protocol'
             ]);
-            const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
+            const fs = { statSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
             expect(files[0].error).to.have.been.calledWithMatch({
@@ -136,7 +136,7 @@ describe('CustomProtocolIndexer', () => {
             const files = prepareFilesMock(1, ['package'], [
                 'NewTest.protocol'
             ]);
-            const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
+            const fs = { statSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
             expect(instance._index).not.to.include.keys('TestProtocol');
@@ -149,7 +149,7 @@ describe('CustomProtocolIndexer', () => {
             const files = prepareFilesMock(1, ['package2'], [
                 'Test2.protocol'
             ]);
-            const fs = { existsSync: () => true, writeFileSync: sinon.spy() };
+            const fs = { statSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
             console.log(instance._index);
@@ -163,7 +163,7 @@ describe('CustomProtocolIndexer', () => {
                 'Test.protocol'
             ]);
             const fs = {
-                existsSync: () => false, mkdirSync: sinon.spy(), writeFileSync: () => {}
+                statSync: () => false, mkdirSync: sinon.spy(), writeFileSync: () => {}
             };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);

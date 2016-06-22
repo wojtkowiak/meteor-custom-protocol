@@ -4,7 +4,7 @@ describe('CustomProtocolIndexReader', () => {
     describe('#loadIndexFile()', () => {
         it('should load config files', () => {
             const fs = {
-                existsSync: () => true,
+                statSync: () => true,
                 readFileSync: () => JSON.stringify({test: 'test'})
             };
 
@@ -12,14 +12,14 @@ describe('CustomProtocolIndexReader', () => {
         });
         it('should return null on problem with reading', () => {
             const fs = {
-                existsSync: () => true,
+                statSync: () => true,
                 readFileSync: () => undefined
             };
             expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.equal(null);
         });
         it('should return empty object when index file does not exists', () => {
             const fs = {
-                existsSync: () => false
+                statSync: () => false
             };
             expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.deep.equal({});
         });

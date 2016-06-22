@@ -228,6 +228,10 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 [meteor-transfer-rate-monitor](https://github.com/wojtkowiak/meteor-transfer-rate-monitor/blob/master/src/lib/TransferRate.protocol.js)
 
+### Changelog
+ 
+ - v3.0.2 - Meteor 1.3.3 compatibility fix.
+
 ### Tests
 
 This package is fully tested and so is the used   [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  

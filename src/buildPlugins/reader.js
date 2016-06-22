@@ -11,6 +11,13 @@ const path          = './private';
 CustomProtocolIndexReader = class CustomProtocolIndexReader {
 
     constructor(fileSystem) {
+        fileSystem.existsSync = (function existsSync(path) {
+            try {
+                return !!this.statSync(path);
+            } catch (e) {
+                return null;
+            }
+        }).bind(fileSystem);
         this._fs = fileSystem;
     }
 

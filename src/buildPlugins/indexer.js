@@ -18,6 +18,15 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
      * @param {Object} fileSystem - Reference to node fs
      */
     constructor(fileSystem) {
+
+        fileSystem.existsSync = (function existsSync(path) {
+            try {
+                return !!this.statSync(path);
+            } catch (e) {
+                return null;
+            }
+        }).bind(fileSystem);
+
         this._index = CustomProtocolIndexer.loadIndexFile(fileSystem);
         this._fs = fileSystem;
         if (this._index === null) {

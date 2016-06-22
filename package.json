@@ -1,6 +1,6 @@
 {
   "name": "meteor-custom-protocol",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "dependencies": {
     "gulp": "^3.9.0",
     "gulp-jsdoc-to-markdown": "^1.1.1",
