@@ -1,7 +1,7 @@
 {
   "name": "meteor-custom-protocol",
-  "version": "3.0.3",
-  "dependencies": {
+  "version": "3.1.0",
+  "devDependencies": {
     "gulp": "^3.9.0",
     "gulp-jsdoc-to-markdown": "^1.1.1",
     "gulp-util": "^3.0.7",
@@ -10,6 +10,7 @@
     "merge-stream": "^1.0.0"
   },
   "scripts": {
-    "install": "npm install -g eslint-config-airbnb eslint-plugin-react eslint"
+    "install": "npm install -g eslint-config-airbnb eslint-plugin-react eslint",
+    "docs": "gulp --gulpfile .gulp/gulpfile.js docs"
   }
 }

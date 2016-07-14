@@ -11,13 +11,6 @@ const path          = './private';
 CustomProtocolIndexReader = class CustomProtocolIndexReader {
 
     constructor(fileSystem) {
-        fileSystem.existsSync = (function existsSync(path) {
-            try {
-                return !!this.statSync(path);
-            } catch (e) {
-                return null;
-            }
-        }).bind(fileSystem);
         this._fs = fileSystem;
     }
 
@@ -29,14 +22,18 @@ CustomProtocolIndexReader = class CustomProtocolIndexReader {
      * @returns {Object|null}
      */
     static loadIndexFile(fileSystem) {
-        if (fileSystem.existsSync(`${path}/${indexFile}`)) {
-            try {
-                return JSON.parse(fileSystem.readFileSync(`${path}/${indexFile}`));
-            } catch (error) {
-                return null;
-            }
+        let fileContents;
+        try {
+            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`)
+        } catch (e) {
+            return {};
         }
-        return {};
+
+        try {
+            return JSON.parse(fileContents);
+        } catch (error) {
+            return null;
+        }
     }
 
     /**

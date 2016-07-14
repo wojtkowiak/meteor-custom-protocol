@@ -58,6 +58,36 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
     }
 
     /**
+     * Removes a callback for a specified message type.
+     *
+     * @param {string}                                 messageType - Message type.
+     * @param {DynamicMessagesProtocol~messageHandler} callback    - Callback to remove.
+     */
+    removeCallback(messageType, callback = Function.prototype) {
+        if (!this._callbacks[messageType]) {
+            return;
+        }
+
+        const index = this._callbacks[messageType].indexOf(callback);
+        if (~index) {
+            this._callbacks[messageType].splice(index, 1);
+        }
+    }
+
+    /**
+     * Removes all callbacks for a specified message type.
+     *
+     * @param {string} messageType - Message type.
+     */
+    removeAllCallbacks(messageType) {
+        if (!this._callbacks[messageType]) {
+            return;
+        }
+
+        delete this._callbacks[messageType];
+    }
+
+    /**
      * Sends the specified message type with payload.
      *
      * @param {string} messageType      - Message type.

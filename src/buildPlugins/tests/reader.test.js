@@ -2,9 +2,8 @@ const expect = chai.expect;
 
 describe('CustomProtocolIndexReader', () => {
     describe('#loadIndexFile()', () => {
-        it('should load config files', () => {
+        it('should load config files2', () => {
             const fs = {
-                statSync: () => true,
                 readFileSync: () => JSON.stringify({test: 'test'})
             };
 
@@ -12,14 +11,13 @@ describe('CustomProtocolIndexReader', () => {
         });
         it('should return null on problem with reading', () => {
             const fs = {
-                statSync: () => true,
                 readFileSync: () => undefined
             };
             expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.equal(null);
         });
         it('should return empty object when index file does not exists', () => {
             const fs = {
-                statSync: () => false
+                statSync: () => { throw new Error(); }
             };
             expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.deep.equal({});
         });

@@ -44,9 +44,11 @@ Receiving:
 // sessionId is only provided on server
 protocol.on('myMessage', (data, sessionId) => {});
 ```
+You can also remove a callback using [`removeCallback`](DYNAMIC_MESSAGES_PROTOCOL.md##dynamicmessagesprotocolremovecallbackmessagetype-callback) or [`removeAllCallbacks`](DYNAMIC_MESSAGES_PROTOCOL.md##dynamicmessagesprotocolremoveallcallbacksmessagetype).
 
 And that is basically it. There is just one limitation - your data object can not have a `__type` field because it is used to store your message name. 
 You can change the field name to something else by invoking `protocol.setTypeField('another field name');`.
+
 
 ### Creating you own protocol
 
@@ -220,7 +222,7 @@ You can also check:
 ## Contributing
 
 If you discovered a bug please file an issue. PR are always welcome, but be sure to run and update the tests.  
-Please also regenerate the docs running `gulp --gulpfile .gulp/gulpfile.js docs`.
+Please also regenerate the docs running `npm run docs`.
 
 ### Examples
 
@@ -230,11 +232,12 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Changelog
  
+ - v3.1.0 - added `removeCallback` and `removeAllCallbacks` to DynamicMessagesProtocol  
  - v3.0.2 - Meteor 1.3.3 compatibility fix.
 
 ### Tests
 
-This package is fully tested and so is the used   [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  
+This package is fully tested and so is the used [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  
 To run the tests, being inside the meteor project that uses this package type:
 
 `meteor test-packages --driver-package=practicalmeteor:mocha omega:custom-protocols`

@@ -8,12 +8,23 @@ Implementation of common logic for dynamic messages type protocols.
 **Category**: PROTOCOLS  
 
 * *[DynamicMessagesProtocol](#DynamicMessagesProtocol) : <code>[DynamicMessagesProtocol](#DynamicMessagesProtocol)</code>*
+    * *[new DynamicMessagesProtocol(name)](#new_DynamicMessagesProtocol_new)*
     * _instance_
         * *[.processMessages(messageObject, sessionId)](#DynamicMessagesProtocol+processMessages)*
         * *[.on(messageType, callback)](#DynamicMessagesProtocol+on)*
+        * *[.removeCallback(messageType, callback)](#DynamicMessagesProtocol+removeCallback)*
+        * *[.removeAllCallbacks(messageType)](#DynamicMessagesProtocol+removeAllCallbacks)*
         * *[.send(messageType, payload, sessionIds, deferred)](#DynamicMessagesProtocol+send)*
     * _inner_
         * *[~messageHandler](#DynamicMessagesProtocol..messageHandler) : <code>function</code>*
+
+<a name="new_DynamicMessagesProtocol_new"></a>
+
+#### *new DynamicMessagesProtocol(name)*
+
+| Param | Type | Description |
+| --- | --- | --- |
+| name | <code>string</code> | Class name of the protocol. |
 
 <a name="DynamicMessagesProtocol+processMessages"></a>
 
@@ -38,6 +49,29 @@ Registers a callback for a specified message type.
 | --- | --- | --- |
 | messageType | <code>string</code> | Message type. |
 | callback | <code>[messageHandler](#DynamicMessagesProtocol..messageHandler)</code> | Callback to fire. |
+
+<a name="DynamicMessagesProtocol+removeCallback"></a>
+
+#### *dynamicMessagesProtocol.removeCallback(messageType, callback)*
+Removes a callback for a specified message type.
+
+**Kind**: instance method of <code>[DynamicMessagesProtocol](#DynamicMessagesProtocol)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageType | <code>string</code> | Message type. |
+| callback | <code>[messageHandler](#DynamicMessagesProtocol..messageHandler)</code> | Callback to remove. |
+
+<a name="DynamicMessagesProtocol+removeAllCallbacks"></a>
+
+#### *dynamicMessagesProtocol.removeAllCallbacks(messageType)*
+Removes all callbacks for a specified message type.
+
+**Kind**: instance method of <code>[DynamicMessagesProtocol](#DynamicMessagesProtocol)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageType | <code>string</code> | Message type. |
 
 <a name="DynamicMessagesProtocol+send"></a>
 

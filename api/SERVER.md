@@ -11,7 +11,7 @@ Custom protocol server side API.
     * [.protocolTypes](#CustomProtocolCommon+protocolTypes) : <code>enum</code>
     * [.send(messageId, payload, sessionIds, deferred)](#CustomProtocol+send)
     * [.setTypeFieldName(name)](#CustomProtocolCommon+setTypeFieldName)
-    * [.registerProtocol(options)](#CustomProtocolCommon+registerProtocol)
+    * [.registerProtocol(name, options)](#CustomProtocolCommon+registerProtocol)
     * [.registerMessages()](#CustomProtocolCommon+registerMessages)
     * [.registerMessage(messageId, definition)](#CustomProtocolCommon+registerMessage)
     * [.on(messageId, callback)](#CustomProtocolCommon+on)
@@ -57,13 +57,14 @@ For protocols with dynamic messages sets the field name that holds the message t
 
 <a name="CustomProtocolCommon+registerProtocol"></a>
 
-#### customProtocol.registerProtocol(options)
+#### customProtocol.registerProtocol(name, options)
 Registers the protocol in core class.
 
 **Kind**: instance method of <code>[CustomProtocol](#CustomProtocol)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| name | <code>string</code> | Class name of the protocol. |
 | options | <code>Object</code> | An object with the protocol config. |
 
 <a name="CustomProtocolCommon+registerMessages"></a>

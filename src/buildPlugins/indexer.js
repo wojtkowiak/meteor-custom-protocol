@@ -18,15 +18,6 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
      * @param {Object} fileSystem - Reference to node fs
      */
     constructor(fileSystem) {
-
-        fileSystem.existsSync = (function existsSync(path) {
-            try {
-                return !!this.statSync(path);
-            } catch (e) {
-                return null;
-            }
-        }).bind(fileSystem);
-
         this._index = CustomProtocolIndexer.loadIndexFile(fileSystem);
         this._fs = fileSystem;
         if (this._index === null) {
@@ -44,14 +35,18 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
      * @returns {Object|null}
      */
     static loadIndexFile(fileSystem) {
-        if (fileSystem.existsSync(`${path}/${indexFile}`)) {
-            try {
-                return JSON.parse(fileSystem.readFileSync(`${path}/${indexFile}`));
-            } catch (error) {
-                return null;
-            }
+        let fileContents;
+        try {
+            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`)
+        } catch (e) {
+            return {};
         }
-        return {};
+
+        try {
+            return JSON.parse(fileContents);
+        } catch (error) {
+            return null;
+        }
     }
 
     /**
@@ -167,7 +162,9 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
         });
 
         if (change) {
-            if (!this._fs.existsSync('./private')) {
+            try {
+                this._fs.statSync('./private');
+            } catch(e) {
                 this._fs.mkdirSync('./private');
             }
             this._fs.writeFileSync(`./private/${indexFile}`, JSON.stringify(this._index, null, 4));

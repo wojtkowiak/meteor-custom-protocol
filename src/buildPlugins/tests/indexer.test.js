@@ -4,7 +4,6 @@ describe('CustomProtocolIndexer', () => {
     describe('#loadIndexFile()', () => {
         it('should load config files', () => {
             const fs = {
-                statSync: () => true,
                 readFileSync: () => JSON.stringify({ test: 'test' })
             };
 
@@ -12,14 +11,13 @@ describe('CustomProtocolIndexer', () => {
         });
         it('should return null on problem with reading', () => {
             const fs = {
-                statSync: () => true,
                 readFileSync: () => undefined
             };
             expect(CustomProtocolIndexer.loadIndexFile(fs)).to.equal(null);
         });
         it('should return empty object when index file does not exists', () => {
             const fs = {
-                statSync: () => false
+                readFileSync: () => { throw new Error(); }
             };
             expect(CustomProtocolIndexer.loadIndexFile(fs)).to.deep.equal({});
         });
@@ -163,7 +161,7 @@ describe('CustomProtocolIndexer', () => {
                 'Test.protocol'
             ]);
             const fs = {
-                statSync: () => false, mkdirSync: sinon.spy(), writeFileSync: () => {}
+                statSync: () => { throw new Error(); }, mkdirSync: sinon.spy(), writeFileSync: () => {}
             };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
