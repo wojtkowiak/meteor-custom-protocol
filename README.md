@@ -44,7 +44,7 @@ Receiving:
 // sessionId is only provided on server
 protocol.on('myMessage', (data, sessionId) => {});
 ```
-You can also remove a callback using [`removeCallback`](DYNAMIC_MESSAGES_PROTOCOL.md##dynamicmessagesprotocolremovecallbackmessagetype-callback) or [`removeAllCallbacks`](DYNAMIC_MESSAGES_PROTOCOL.md##dynamicmessagesprotocolremoveallcallbacksmessagetype).
+You can also remove a callback using [`removeCallback`](api/DYNAMIC_MESSAGES_PROTOCOL.md#DynamicMessagesProtocol+removeCallback) or [`removeAllCallbacks`](api/DYNAMIC_MESSAGES_PROTOCOL.md#DynamicMessagesProtocol+removeAllCallbacks).
 
 And that is basically it. There is just one limitation - your data object can not have a `__type` field because it is used to store your message name. 
 You can change the field name to something else by invoking `protocol.setTypeField('another field name');`.
