@@ -214,10 +214,10 @@ However if you will remove the `.protocol` file, do a build, add the file again,
 
 Full API documentation if you need it :smile:.  
 Client and server only differ on send method definition.  
-[Client API](CLIENT.md)  
-[Server API](SERVER.md)  
+[Client API](api/CLIENT.md)  
+[Server API](api/SERVER.md)  
 You can also check:  
-[DynamicMessagesProtocol API](DYNAMIC_MESSAGES_PROTOCOL.md)
+[DynamicMessagesProtocol API](api/DYNAMIC_MESSAGES_PROTOCOL.md)
 
 ## Contributing
 
