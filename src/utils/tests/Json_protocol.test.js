@@ -1,3 +1,5 @@
+import chai from 'ultimate-chai';
+
 const expect = chai.expect;
 
 describe('JsonProtocol', () => {

@@ -1,3 +1,6 @@
+import chai from 'ultimate-chai';
+import sinon from 'sinon';
+
 const expect = chai.expect;
 
 describe('DynamicMessagesProtocol', () => {
@@ -87,7 +90,7 @@ describe('DynamicMessagesProtocol', () => {
             expect(protocol._callbacks['test']).to.contain(cb);
             expect(protocol._callbacks['test']).to.contain(cb2);
             protocol.removeAllCallbacks('test');
-            expect(protocol._callbacks['test']).to.be.empty();
+            expect(protocol._callbacks['test']).to.be.undefined();
             CustomProtocolCore._customProtocols = {};
         });
     });

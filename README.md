@@ -108,13 +108,19 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
     
     // on client
     protocol.send(protocol.MY_MESSAGE, { some: 'data' });
+ 
+    // with `DDP.connect` 
+    const ddp = DDP.connect('ip:port');
+    const connectionId = protocol.registerConnection(ddp);
    
     // on server 
     protocol.send(protocol.MY_MESSAGE, { some: 'data' }, 'sessionId');
     
     // register callback to receive the data
-    // sessionId is only provided on server
-    protocol.on(protocol.MY_MESSAGE, (data, sessionId) => { console.log(data) });
+    // * sessionId and userId is only provided on server
+    // * connectionId and connection are only provided if the 
+    //   message came on additional DDP connection
+    protocol.on(protocol.MY_MESSAGE, (data, sessionId, userId, connectionId, connection) => { console.log(data) });
     ```
     
 If you want to send different data and receive them on different callback you have to declare a message for each of them or create a dynamic messages type protocol - [check out below](https://github.com/wojtkowiak/meteor-custom-protocol#protocol-types---declared-or-dynamic-messages). 
@@ -232,6 +238,7 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Changelog
  
+ - v4.0.0 - added support for `DDP.connect`, dropped support for `Meteor` below `1.4`
  - v3.1.0 - added `removeCallback` and `removeAllCallbacks` to DynamicMessagesProtocol  
  - v3.0.2 - Meteor 1.3.3 compatibility fix.
 
