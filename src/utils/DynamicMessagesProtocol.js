@@ -7,7 +7,6 @@
  * @type {DynamicMessagesProtocol}
  */
 DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
-
     /**
      * @param {string} name - Class name of the protocol.
      */
@@ -32,7 +31,7 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
      * Fires callbacks registered for a concrete type of message. The type of message is checked in
      * the message itself by checking the field with name specified with `this.setTypeFieldName`.
      *
-     * @param {Object}  messageObject - Decoded message object.
+     * @param {Object}  message       - Decoded message object.
      * @param {string}  sessionId     - Session id of sender.
      * @param {string=} userId        - User id if available.
      * @param {Symbol=} connectionId  - Id of the additional DDP connection.
@@ -41,9 +40,9 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
      */
     processMessages(message, sessionId, userId, connectionId, connection) {
         if (this._callbacks[message[this._typeFieldName]]) {
-            this._callbacks[message[this._typeFieldName]].forEach(
-                callback => callback(message, sessionId, userId, connectionId, connection)
-            );
+            this._callbacks[message[this._typeFieldName]]
+                .forEach(callback =>
+                    callback(message, sessionId, userId, connectionId, connection));
         }
     }
 
@@ -96,7 +95,8 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
      *
      * @param {string} messageType         - Message type.
      * @param {Object} payload             - Object with the data.
-     * @param {Array|string|Object} target - Server: session id or an array of it, client: ddp connection instance.
+     * @param {Array|string|Object} target - Server: session id or an array of it,
+     *                                       client: ddp connection instance.
      * @param {boolean}      deferred      - Specifies whether to defer the sending in the loop.
      */
     send(messageType, payload, target, deferred = false) {
@@ -107,7 +107,6 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
         this._typeObject[this._typeFieldName] = messageType;
         super.send(0, _.extend(this._typeObject, payload), target, deferred);
     }
-
 };
 
 /**

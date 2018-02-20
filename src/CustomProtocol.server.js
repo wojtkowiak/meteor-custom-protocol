@@ -6,7 +6,6 @@
  * @type {CustomProtocol}
  */
 CustomProtocol = class CustomProtocol extends CustomProtocolCommon {
-
     /**
      * Encodes and sends the message to specified session ids.
      *
@@ -21,10 +20,8 @@ CustomProtocol = class CustomProtocol extends CustomProtocolCommon {
         if (!deferred) {
             sessionIdsToSendTo.forEach(sessionId => Meteor.directStream.send(message, sessionId));
         } else {
-            sessionIdsToSendTo.forEach(sessionId => Meteor.defer(
-                () => Meteor.directStream.send(message, sessionId))
-            );
+            sessionIdsToSendTo.forEach(sessionId =>
+                Meteor.defer(() => Meteor.directStream.send(message, sessionId)));
         }
     }
-
 };

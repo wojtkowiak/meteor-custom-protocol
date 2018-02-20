@@ -1,7 +1,7 @@
 import chai from 'ultimate-chai';
 import sinon from 'sinon';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('CustomProtocolIndexer', () => {
     describe('#loadIndexFile()', () => {
@@ -80,7 +80,7 @@ describe('CustomProtocolIndexer', () => {
     describe('#processFilesForTarget', () => {
         function prepareFilesMock(filesCount, packageNames = [], names = []) {
             const files = [];
-            for (let i = 1; i <= filesCount; i++) {
+            for (let i = 1; i <= filesCount; i += 1) {
                 files.push({
                     getPackageName: () => packageNames[i - 1],
                     getPathInPackage: () => '',
@@ -153,7 +153,6 @@ describe('CustomProtocolIndexer', () => {
             const fs = { statSync: () => true, writeFileSync: sinon.spy() };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);
-            console.log(instance._index);
             expect(instance._index).not.to.include.keys('TestProtocol');
             expect(instance._index).to.include.keys('Test2Protocol');
         });
@@ -164,7 +163,9 @@ describe('CustomProtocolIndexer', () => {
                 'Test.protocol'
             ]);
             const fs = {
-                statSync: () => { throw new Error(); }, mkdirSync: sinon.spy(), writeFileSync: () => {}
+                statSync: () => { throw new Error(); },
+                mkdirSync: sinon.spy(),
+                writeFileSync: () => {}
             };
             const instance = new CustomProtocolIndexer(fs);
             instance.processFilesForTarget(files);

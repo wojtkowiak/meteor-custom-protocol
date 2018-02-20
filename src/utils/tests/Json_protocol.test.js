@@ -1,6 +1,6 @@
 import chai from 'ultimate-chai';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('JsonProtocol', () => {
     describe('#send', () => {

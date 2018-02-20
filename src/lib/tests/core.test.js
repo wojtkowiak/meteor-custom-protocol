@@ -1,7 +1,7 @@
 import chai from 'ultimate-chai';
 import sinon from 'sinon';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('CustomProtocolCoreClass', () => {
     function getInstanceWithRegisteredProtocol(id, protocol) {

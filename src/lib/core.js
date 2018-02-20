@@ -9,7 +9,6 @@
  * @type {CustomProtocolCoreClass}
  */
 CustomProtocolCoreClass = class CustomProtocolCoreClass {
-
     constructor(directStream) {
         const self = this;
         this._customProtocols = {};
@@ -45,7 +44,10 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
                     `protocol: ${protocolId}. The message was: ${message}`);
             } else {
                 this._fireMessageCallbacks(
-                    protocolId, messageId, sessionId, message.substr(2), userId, connectionId, connection);
+                    protocolId, messageId,
+                    sessionId, message.substr(2),
+                    userId, connectionId, connection
+                );
                 directStream.preventCallingMeteorHandler();
             }
         }
@@ -64,7 +66,11 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
 
      * @private
      */
-    _fireMessageCallbacks(protocolId, messageId, sessionId, rawMessage, userId, connectionId, connection) {
+    _fireMessageCallbacks(
+        protocolId, messageId,
+        sessionId, rawMessage,
+        userId, connectionId, connection
+    ) {
         const callbacks = this._customProtocols[protocolId].messages[messageId]._callbacks;
         if (!callbacks.length) return;
         const message = this._customProtocols[protocolId].protocol.decode(
@@ -72,7 +78,8 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
             this.getDefinition(protocolId, messageId),
             rawMessage
         );
-        callbacks.forEach(callback => callback(message, sessionId, userId, connectionId, connection));
+        callbacks.forEach(callback =>
+            callback(message, sessionId, userId, connectionId, connection));
     }
 
     /**
@@ -103,9 +110,7 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
      */
     registerMessage(protocolId, messageId, definition) {
         if (messageId > 255) {
-            throw new Error(
-                'Message if can not be higher than 255.'
-            );
+            throw new Error('Message if can not be higher than 255.');
         }
         this._customProtocols[protocolId].messages[messageId] = {
             id: messageId,
@@ -156,7 +161,6 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
             this._customProtocols[protocolId].messages[messageId].id
         );
     }
-
 };
 
 CustomProtocolCore = new CustomProtocolCoreClass(Meteor.directStream);

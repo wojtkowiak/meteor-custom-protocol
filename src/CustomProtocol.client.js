@@ -6,7 +6,6 @@
  * @type {CustomProtocol}
  */
 CustomProtocol = class CustomProtocol extends CustomProtocolCommon {
-
     /**
      * Register a custom connection from `DDP.connect`.
      *
@@ -29,5 +28,4 @@ CustomProtocol = class CustomProtocol extends CustomProtocolCommon {
     send(messageId, payload, connection) {
         Meteor.directStream.send(this.getEncodedMessage(messageId, payload), connection);
     }
-
 };

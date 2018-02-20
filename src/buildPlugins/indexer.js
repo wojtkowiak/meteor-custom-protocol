@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 
-const indexFile    = 'custom_protocols_index.json';
-const path          = './private';
+const indexFile = 'custom_protocols_index.json';
+const path = './private';
 
 /**
  * Custom protocols indexer implementation. Assigns an unique id to every custom protocol and
@@ -11,7 +11,6 @@ const path          = './private';
  * @type {CustomProtocolIndexer}
  */
 CustomProtocolIndexer = class CustomProtocolIndexer {
-
     /**
      * Constructs this class.
      *
@@ -21,9 +20,7 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
         this._index = CustomProtocolIndexer.loadIndexFile(fileSystem);
         this._fs = fileSystem;
         if (this._index === null) {
-            throw new Error(
-                `CustomProtocolIndexer: Failed to parse ${path}/${indexFile} : not valid JSON.`
-            );
+            throw new Error(`CustomProtocolIndexer: Failed to parse ${path}/${indexFile} : not valid JSON.`);
         }
     }
 
@@ -37,7 +34,7 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
     static loadIndexFile(fileSystem) {
         let fileContents;
         try {
-            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`)
+            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`);
         } catch (e) {
             return {};
         }
@@ -64,12 +61,13 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
         // Since the config has { className: { id: <id>, package: <packageName> } } format, we need
         // to reduce it to an ids array.
         let ids = Object.keys(this._index).reduce(
-            (values, key) => (values.push(this._index[key].id), values), []
+            (values, key) => (values.push(this._index[key].id), values),
+            []
         );
         ids = ids.sort();
         if (ids[0] === 1) {
             // Look for a gap.
-            ids.sort().some(value => {
+            ids.sort().some((value) => {
                 if (lastValue && value - lastValue > 1) {
                     id = lastValue + 1;
                     return true;
@@ -97,37 +95,32 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
         const classNames = {};
         let change = false;
         let packageName;
-        let packages = {};
+        const packages = {};
 
         files.forEach((file) => {
-            //const content = file.getContentsAsString();
-            let className = file.getBasename().replace('.protocol', 'Protocol');
+            const className = file.getBasename().replace('.protocol', 'Protocol');
             packageName = (file.getPackageName() !== null) ? file.getPackageName() : 'app';
             packages[packageName] = true;
 
             if (packageName in classNames) {
                 classNames[packageName].push(className);
             } else {
-                classNames[packageName] = [ className ];
+                classNames[packageName] = [className];
             }
 
             if (!this._index[className]) {
                 const id = this.getFreeId();
-                console.info(
-                    `CustomProtocolIndexer: Assigned protocol id: ${id} for ${className}.`
-                );
+                console.info(`CustomProtocolIndexer: Assigned protocol id: ${id} for ${className}.`);
                 this._index[className] = { id, package: packageName };
                 change = true;
-            } else {
-                if (this._index[className].package !== packageName) {
-                    const classPackage = this._index[className].package;
-                    file.error({
-                        message: `Trying to register ${className} protocol in ` +
-                            `${packageName} package but this ` +
-                            'class name is already registered in ' +
-                            `${classPackage} package.`
-                    });
-                }
+            } else if (this._index[className].package !== packageName) {
+                const classPackage = this._index[className].package;
+                file.error({
+                    message: `Trying to register ${className} protocol in ` +
+                        `${packageName} package but this ` +
+                        'class name is already registered in ' +
+                        `${classPackage} package.`
+                });
             }
             file.addJavaScript({
                 sourcePath: file.getPathInPackage(),
@@ -143,28 +136,31 @@ CustomProtocolIndexer = class CustomProtocolIndexer {
             const protocolsRegisteredInPackage = Object.keys(this._index).reduce(
                 (values, key) => (
                     this._index[key].package === packageName ? values.push(key) : null, values
-                ), []);
-
-            _.difference(protocolsRegisteredInPackage, classNames[packageName]).forEach(
-                protocol => delete this._index[protocol]
+                ),
+                []
             );
+
+            _.difference(protocolsRegisteredInPackage, classNames[packageName])
+                .forEach(protocol => delete this._index[protocol]);
         });
 
         const packagesInIndex = Object.keys(this._index).reduce(
             (values, key) => (
                 values[this._index[key].package] = true, values
-            ), {});
+            ),
+            {}
+        );
 
         _.difference(Object.keys(packagesInIndex), Object.keys(packages)).forEach((packageName) => {
-           Object.keys(this._index).forEach((protocol) => {
-               if (this._index[protocol].package === packageName) delete this._index[protocol];
-           })
+            Object.keys(this._index).forEach((protocol) => {
+                if (this._index[protocol].package === packageName) delete this._index[protocol];
+            });
         });
 
         if (change) {
             try {
                 this._fs.statSync('./private');
-            } catch(e) {
+            } catch (e) {
                 this._fs.mkdirSync('./private');
             }
             this._fs.writeFileSync(`./private/${indexFile}`, JSON.stringify(this._index, null, 4));

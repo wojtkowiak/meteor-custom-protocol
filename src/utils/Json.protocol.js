@@ -9,7 +9,6 @@ let instance;
  * @type {JsonProtocol}
  */
 JsonProtocol = class JsonProtocol extends DynamicMessagesProtocol {
-
     constructor() {
         if (instance) throw new Error('JsonProtocol is a singleton.');
         super('JsonProtocol');
@@ -52,5 +51,4 @@ JsonProtocol = class JsonProtocol extends DynamicMessagesProtocol {
     decode(messageId, definiton, rawMessage) {
         return JSON.parse(rawMessage);
     }
-
 };

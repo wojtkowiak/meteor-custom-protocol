@@ -1,16 +1,16 @@
 import chai from 'ultimate-chai';
 import sinon from 'sinon';
 
-const expect = chai.expect;
+const { expect } = chai;
 
 describe('CustomProtocolIndexReader', () => {
     describe('#loadIndexFile()', () => {
         it('should load config files2', () => {
             const fs = {
-                readFileSync: () => JSON.stringify({test: 'test'})
+                readFileSync: () => JSON.stringify({ test: 'test' })
             };
 
-            expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.be.deep.equal({test: 'test'});
+            expect(CustomProtocolIndexReader.loadIndexFile(fs)).to.be.deep.equal({ test: 'test' });
         });
         it('should return null on problem with reading', () => {
             const fs = {
@@ -49,7 +49,8 @@ describe('CustomProtocolIndexReader', () => {
                 data: sinon.match(`CustomProtocolsIndex = ${JSON.stringify(index)};`)
             });
             expect(files[0].addJavaScript.args[0][0]).to.include.keys(
-                'sourcePath', 'path', 'data', 'hash'
+                'sourcePath', 'path',
+                'data', 'hash'
             );
         });
     });

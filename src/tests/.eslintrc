@@ -2,5 +2,15 @@
   "env": {
     "mocha": true
   },
-  "globals": { "chai": true, "sinon": true, "CustomProtocolCoreClass": true }
+  "globals": {
+    "chai": true,
+    "sinon": true,
+    "CustomProtocolCoreClass": true
+  },
+  "rules": {
+    "import/no-unresolved": "off",
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "no-underscore-dangle": "off"
+  }
 }

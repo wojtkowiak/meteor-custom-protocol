@@ -1,5 +1,5 @@
-const indexFile    = 'custom_protocols_index.json';
-const path          = './private';
+const indexFile = 'custom_protocols_index.json';
+const path = './private';
 
 /**
  * Since we have no access to app Assets object we need to copy the protocols index into a file
@@ -9,7 +9,6 @@ const path          = './private';
  * @type {CustomProtocolIndexReader}
  */
 CustomProtocolIndexReader = class CustomProtocolIndexReader {
-
     constructor(fileSystem) {
         this._fs = fileSystem;
     }
@@ -24,7 +23,7 @@ CustomProtocolIndexReader = class CustomProtocolIndexReader {
     static loadIndexFile(fileSystem) {
         let fileContents;
         try {
-            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`)
+            fileContents = fileSystem.readFileSync(`${path}/${indexFile}`);
         } catch (e) {
             return {};
         }
@@ -44,12 +43,10 @@ CustomProtocolIndexReader = class CustomProtocolIndexReader {
     processFilesForTarget(files) {
         const index = CustomProtocolIndexReader.loadIndexFile(this._fs);
         if (index === null) {
-            throw new Error(
-                `CustomProtocolIndexReader: Failed to parse ${path}/${indexFile} : ` +
-                'not valid JSON.'
-            );
+            throw new Error(`CustomProtocolIndexReader: Failed to parse ${path}/${indexFile} : ` +
+                'not valid JSON.');
         }
-        files.forEach(inputFile => {
+        files.forEach((inputFile) => {
             inputFile.addJavaScript({
                 sourcePath: inputFile.getPathInPackage(),
                 path: inputFile.getPathInPackage(),
