@@ -20,7 +20,8 @@ Custom protocol server side API.
 <a name="CustomProtocolCommon+protocolTypes"></a>
 
 #### customProtocol.protocolTypes : <code>enum</code>
-There are two types of protocols. Those with messages declared explicitly in the classconstructor and those which allow to register messages dynamically at any time.
+There are two types of protocols. Those with messages declared explicitly in the class
+constructor and those which allow to register messages dynamically at any time.
 
 **Kind**: instance enum property of <code>[CustomProtocol](#CustomProtocol)</code>  
 **Properties**

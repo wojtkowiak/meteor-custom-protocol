@@ -9,7 +9,8 @@ Custom protocol client side API.
 
 * [CustomProtocol](#CustomProtocol) : <code>[CustomProtocol](#CustomProtocol)</code>
     * [.protocolTypes](#CustomProtocolCommon+protocolTypes) : <code>enum</code>
-    * [.send(messageId, payload)](#CustomProtocol+send)
+    * [.registerConnection([connection])](#CustomProtocol+registerConnection) ⇒ <code>Symbol</code>
+    * [.send(messageId, payload, connection)](#CustomProtocol+send)
     * [.setTypeFieldName(name)](#CustomProtocolCommon+setTypeFieldName)
     * [.registerProtocol(name, options)](#CustomProtocolCommon+registerProtocol)
     * [.registerMessages()](#CustomProtocolCommon+registerMessages)
@@ -20,7 +21,8 @@ Custom protocol client side API.
 <a name="CustomProtocolCommon+protocolTypes"></a>
 
 #### customProtocol.protocolTypes : <code>enum</code>
-There are two types of protocols. Those with messages declared explicitly in the classconstructor and those which allow to register messages dynamically at any time.
+There are two types of protocols. Those with messages declared explicitly in the class
+constructor and those which allow to register messages dynamically at any time.
 
 **Kind**: instance enum property of <code>[CustomProtocol](#CustomProtocol)</code>  
 **Properties**
@@ -30,9 +32,21 @@ There are two types of protocols. Those with messages declared explicitly in the
 | DECLARED_MESSAGES | <code>number</code> | <code>1</code> | 
 | DYNAMIC_MESSAGES | <code>number</code> | <code>2</code> | 
 
+<a name="CustomProtocol+registerConnection"></a>
+
+#### customProtocol.registerConnection([connection]) ⇒ <code>Symbol</code>
+Register a custom connection from `DDP.connect`.
+
+**Kind**: instance method of <code>[CustomProtocol](#CustomProtocol)</code>  
+**Returns**: <code>Symbol</code> - Id of the additional DDP connection.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| [connection] | <code>Object</code> | Reference to DDP connection object. |
+
 <a name="CustomProtocol+send"></a>
 
-#### customProtocol.send(messageId, payload)
+#### customProtocol.send(messageId, payload, connection)
 Encodes and send the message to the server.
 
 **Kind**: instance method of <code>[CustomProtocol](#CustomProtocol)</code>  
@@ -41,6 +55,7 @@ Encodes and send the message to the server.
 | --- | --- | --- |
 | messageId | <code>number</code> | Id of the message. |
 | payload | <code>Array</code> | Array of data that the message should carry. |
+| connection | <code>Object</code> | DDP connection instance. |
 
 <a name="CustomProtocolCommon+setTypeFieldName"></a>
 
