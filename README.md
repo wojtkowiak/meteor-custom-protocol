@@ -238,7 +238,10 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Changelog
  
- - v4.0.0 - added support for `DDP.connect`, dropped support for `Meteor` below `1.4`
+ - v4.0.0 
+    - added support for `DDP.connect`
+    - dropped support for `Meteor` below `1.4`
+    - added `userId` to message callback on server side
  - v3.1.0 - added `removeCallback` and `removeAllCallbacks` to DynamicMessagesProtocol  
  - v3.0.2 - Meteor 1.3.3 compatibility fix.
 

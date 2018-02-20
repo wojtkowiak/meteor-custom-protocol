@@ -1,6 +1,6 @@
 Package.describe({
     name: 'omega:custom-protocol',
-    version: '3.1.0',
+    version: '4.0.0',
     summary: 'Send custom data on the Meteor\'s defaults websocket connection.',
     git: 'https://github.com/wojtkowiak/meteor-custom-protocol',
     documentation: 'README.md'
