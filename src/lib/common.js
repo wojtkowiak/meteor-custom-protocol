@@ -104,6 +104,25 @@ CustomProtocolCommon = class CustomProtocolCommon {
     }
 
     /**
+     * Removes a callback for a specified message.
+     *
+     * @param {number} messageId  - Id of the message.
+     * @param {Function} callback - Reference of the function to call when a message arrives.
+     */
+    removeCallback(messageId, callback = Function.prototype) {
+        CustomProtocolCore.removeCallback(this._id, messageId, callback);
+    }
+
+    /**
+     * Removes all callbacks for a specified message.
+     *
+     * @param {number} messageId  - Id of the message.
+     */
+    removeAllCallbacks(messageId) {
+        CustomProtocolCore.removeAllCallbacks(this._id, messageId);
+    }
+
+    /**
      * Computes the message string by concatenating header and encoded message payload.
      *
      * @param {number} messageId - Id of the message.

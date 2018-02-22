@@ -74,8 +74,57 @@ describe('CustomProtocolCoreClass', () => {
         it('should throw on unknown message id', () => {
             const instance = getInstanceWithRegisteredProtocol(1);
             expect(instance.registerCallback.bind(instance, 1, 1, () => {})).to.throw(
-                CustomProtocolError, /Can not set callback for unknown messageId/
+                CustomProtocolError,
+                /Can not set callback for unknown messageId/
             );
+        });
+
+        describe('#removeCallback', () => {
+            it('should remove callback', () => {
+                const instance = getInstanceWithRegisteredProtocol(1);
+
+                function callback() {
+                }
+
+                instance._customProtocols[1].messages[1] = {
+                    id: 1,
+                    definition: {},
+                    _callbacks: []
+                };
+                const callback2 = callback.bind({tmp: 'tmp'});
+                instance.registerCallback(1, 1, callback);
+                instance.registerCallback(1, 1, callback2);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.contain(callback);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.contain(callback2);
+                instance.removeCallback(1, 1, callback);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.not.contain(callback);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.contain(callback2);
+                instance.removeCallback(1, 1, callback2);
+            });
+        });
+
+        describe('#removeAllCallbacks', () => {
+            it('should remove all callbacks', () => {
+                const instance = getInstanceWithRegisteredProtocol(1);
+
+                function callback() {
+                }
+
+                instance._customProtocols[1].messages[1] = {
+                    id: 1,
+                    definition: {},
+                    _callbacks: []
+                };
+                const callback2 = callback.bind({tmp: 'tmp'});
+                instance.registerCallback(1, 1, callback);
+                instance.registerCallback(1, 1, callback2);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.contain(callback);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.contain(callback2);
+                instance.removeAllCallbacks(1, 1);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.not.contain(callback);
+                expect(instance._customProtocols[1].messages[1]._callbacks).to.not.contain(callback2);
+                expect(instance._customProtocols[1].messages[1]._callbacks.length).to.be.equal(0);
+            });
         });
     });
 

@@ -16,6 +16,7 @@
   },
   "scripts": {
     "docs": "gulp --gulpfile .gulp/gulpfile.js docs",
-    "test": "meteor test-packages ./ --driver-package cultofcoders:mocha -p 3050"
+    "test": "meteor test-packages ./ --driver-package cultofcoders:mocha -p 3050",
+    "release": "meteor publish --release=METEOR@1.5.2.2"
   }
 }

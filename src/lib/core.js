@@ -145,6 +145,39 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
     }
 
     /**
+     * Removes a callback for a specified message.
+     *
+     * @param {number} protocolId - Unique number representing the protocol.
+     * @param {number} messageId  - Id of the message.
+     * @param {Function} callback - Reference of the function to call when a message arrives.
+     */
+    removeCallback(protocolId, messageId, callback = Function.prototype) {
+        if (!this._customProtocols[protocolId].messages[messageId]) {
+            return;
+        }
+
+        const index =
+            this._customProtocols[protocolId].messages[messageId]._callbacks.indexOf(callback);
+        if (~index) {
+            this._customProtocols[protocolId].messages[messageId]._callbacks.splice(index, 1);
+        }
+    }
+
+    /**
+     * Removes all callbacks for a specified message.
+     *
+     * @param {number} protocolId - Unique number representing the protocol.
+     * @param {number} messageId  - Id of the message.
+     */
+    removeAllCallbacks(protocolId, messageId) {
+        if (!this._customProtocols[protocolId].messages[messageId]) {
+            return;
+        }
+
+        this._customProtocols[protocolId].messages[messageId]._callbacks = [];
+    }
+
+    /**
      * Gets the 16 bit message header which consists of:
      * 0xxx xxx | yyyy yyyy
      * where x is the protocol id and y is the message id.
