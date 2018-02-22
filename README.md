@@ -250,12 +250,8 @@ Here I will keep track of other packages using custom protocols so you can take 
 This package is fully tested and so is the used [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  
 To run the tests, being inside the meteor project that uses this package type:
 
-`meteor test-packages --driver-package=practicalmeteor:mocha omega:custom-protocols`
+`npm run test`
 
 and check out the results in the browser.
 
 *Some tests are failing on second and consecutive runs. This is nothing to worry about.*
-
-### TODO
-
-* [ ] support `DDP.connect`
