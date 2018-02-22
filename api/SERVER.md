@@ -15,6 +15,8 @@ Custom protocol server side API.
     * [.registerMessages()](#CustomProtocolCommon+registerMessages)
     * [.registerMessage(messageId, definition)](#CustomProtocolCommon+registerMessage)
     * [.on(messageId, callback)](#CustomProtocolCommon+on)
+    * [.removeCallback(messageId, callback)](#CustomProtocolCommon+removeCallback)
+    * [.removeAllCallbacks(messageId)](#CustomProtocolCommon+removeAllCallbacks)
     * [.getEncodedMessage(messageId, payload)](#CustomProtocolCommon+getEncodedMessage) ⇒ <code>string</code>
 
 <a name="CustomProtocolCommon+protocolTypes"></a>
@@ -97,6 +99,29 @@ Registers a callback for a specified message.
 | --- | --- | --- |
 | messageId | <code>number</code> | Id of the message. |
 | callback | <code>callback</code> | Function that will receive the message payload. |
+
+<a name="CustomProtocolCommon+removeCallback"></a>
+
+#### customProtocol.removeCallback(messageId, callback)
+Removes a callback for a specified message.
+
+**Kind**: instance method of <code>[CustomProtocol](#CustomProtocol)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>number</code> | Id of the message. |
+| callback | <code>function</code> | Reference of the function to call when a message arrives. |
+
+<a name="CustomProtocolCommon+removeAllCallbacks"></a>
+
+#### customProtocol.removeAllCallbacks(messageId)
+Removes all callbacks for a specified message.
+
+**Kind**: instance method of <code>[CustomProtocol](#CustomProtocol)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| messageId | <code>number</code> | Id of the message. |
 
 <a name="CustomProtocolCommon+getEncodedMessage"></a>
 
