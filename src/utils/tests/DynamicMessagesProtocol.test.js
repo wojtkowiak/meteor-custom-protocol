@@ -1,4 +1,7 @@
-const expect = chai.expect;
+import chai from 'ultimate-chai';
+import sinon from 'sinon';
+
+const { expect } = chai;
 
 describe('DynamicMessagesProtocol', () => {
     describe('#constructor', () => {
@@ -34,7 +37,6 @@ describe('DynamicMessagesProtocol', () => {
     describe('#on', () => {
         it('should register a callback', () => {
             CustomProtocolsIndex.TestProtocol = { id: 1 };
-            //const stub = sinon.stub(CustomProtocolCommon.prototype, 'on');
             const TestProtocol = class TestProtocol extends DynamicMessagesProtocol {
                 constructor() { super('TestProtocol'); }
                 encode() {}
@@ -44,14 +46,13 @@ describe('DynamicMessagesProtocol', () => {
             const cb = () => {};
             protocol.on('test', cb);
             expect(protocol._callbacks).to.have.property('test');
-            expect(protocol._callbacks['test']).to.contain(cb);
+            expect(protocol._callbacks.test).to.contain(cb);
             CustomProtocolCore._customProtocols = {};
         });
     });
     describe('#removeCallback', () => {
         it('should remove a callback', () => {
             CustomProtocolsIndex.TestProtocol = { id: 1 };
-            //const stub = sinon.stub(CustomProtocolCommon.prototype, 'on');
             const TestProtocol = class TestProtocol extends DynamicMessagesProtocol {
                 constructor() { super('TestProtocol'); }
                 encode() {}
@@ -62,18 +63,17 @@ describe('DynamicMessagesProtocol', () => {
             const cb2 = () => {};
             protocol.on('test', cb);
             protocol.on('test', cb2);
-            expect(protocol._callbacks['test']).to.contain(cb);
-            expect(protocol._callbacks['test']).to.contain(cb2);
+            expect(protocol._callbacks.test).to.contain(cb);
+            expect(protocol._callbacks.test).to.contain(cb2);
             protocol.removeCallback('test', cb);
-            expect(protocol._callbacks['test']).to.not.contain(cb);
-            expect(protocol._callbacks['test']).to.contain(cb2);
+            expect(protocol._callbacks.test).to.not.contain(cb);
+            expect(protocol._callbacks.test).to.contain(cb2);
             CustomProtocolCore._customProtocols = {};
         });
     });
     describe('#removeAllCallbacks', () => {
         it('should remove all callbacks', () => {
             CustomProtocolsIndex.TestProtocol = { id: 1 };
-            //const stub = sinon.stub(CustomProtocolCommon.prototype, 'on');
             const TestProtocol = class TestProtocol extends DynamicMessagesProtocol {
                 constructor() { super('TestProtocol'); }
                 encode() {}
@@ -84,12 +84,11 @@ describe('DynamicMessagesProtocol', () => {
             const cb2 = () => {};
             protocol.on('test', cb);
             protocol.on('test', cb2);
-            expect(protocol._callbacks['test']).to.contain(cb);
-            expect(protocol._callbacks['test']).to.contain(cb2);
+            expect(protocol._callbacks.test).to.contain(cb);
+            expect(protocol._callbacks.test).to.contain(cb2);
             protocol.removeAllCallbacks('test');
-            expect(protocol._callbacks['test']).to.be.empty();
+            expect(protocol._callbacks.test).to.be.undefined();
             CustomProtocolCore._customProtocols = {};
         });
     });
-
 });

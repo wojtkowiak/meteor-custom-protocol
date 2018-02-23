@@ -7,7 +7,6 @@
  * @type {CustomProtocolCommon}
  */
 CustomProtocolCommon = class CustomProtocolCommon {
-
     constructor() {
         this._messages = [];
         this._typeFieldName = null;
@@ -48,17 +47,13 @@ CustomProtocolCommon = class CustomProtocolCommon {
      */
     registerProtocol(name, options = {}) {
         if (!CustomProtocolsIndex[name]) {
-            throw new Error(
-                `Protocol ${name} did not receive unique id. Check if the file name is `
-                + 'in format \`<name>.protocol.js\` so that the indexer can assign an id to it.'
-            );
+            throw new Error(`Protocol ${name} did not receive unique id. Check if the file name is `
+                + 'in format `<name>.protocol.js` so that the indexer can assign an id to it.');
         }
         this._id = CustomProtocolsIndex[name].id;
 
         if (this._id > 127) {
-            throw new Error(
-                'Custom protocol must have an this._id lower than 127'
-            );
+            throw new Error('Custom protocol must have an this._id lower than 127');
         }
 
         _.extend(this._options, options);
@@ -106,6 +101,25 @@ CustomProtocolCommon = class CustomProtocolCommon {
      */
     on(messageId, callback) {
         CustomProtocolCore.registerCallback(this._id, messageId, callback);
+    }
+
+    /**
+     * Removes a callback for a specified message.
+     *
+     * @param {number} messageId  - Id of the message.
+     * @param {Function} callback - Reference of the function to call when a message arrives.
+     */
+    removeCallback(messageId, callback = Function.prototype) {
+        CustomProtocolCore.removeCallback(this._id, messageId, callback);
+    }
+
+    /**
+     * Removes all callbacks for a specified message.
+     *
+     * @param {number} messageId  - Id of the message.
+     */
+    removeAllCallbacks(messageId) {
+        CustomProtocolCore.removeAllCallbacks(this._id, messageId);
     }
 
     /**

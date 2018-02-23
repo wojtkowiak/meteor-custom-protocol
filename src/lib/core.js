@@ -9,7 +9,6 @@
  * @type {CustomProtocolCoreClass}
  */
 CustomProtocolCoreClass = class CustomProtocolCoreClass {
-
     constructor(directStream) {
         const self = this;
         this._customProtocols = {};
@@ -24,12 +23,16 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
      * Checks if the message is a DDP or a custom protocol's message. Fires callbacks and prevents
      * Meteor from handling the message.
      *
-     * @param {Object} directStream - Reference to directStream object.
-     * @param {string} message      - Raw message.
-     * @param {string} sessionId    - Meteor's internal session id.
+     * @param {Object}  directStream - Reference to directStream object.
+     * @param {string}  message      - Raw message.
+     * @param {string}  sessionId    - Meteor's internal session id.
+     * @param {string=} userId       - User id if available.
+     * @param {Symbol=} connectionId - Id of the additional DDP connection.
+     * @param {Object=} connection   - Reference to DDP connection object.
+
      * @private
      */
-    _messageHandler(directStream, message, sessionId) {
+    _messageHandler(directStream, message, sessionId, userId, connectionId, connection) {
         if (!(message.charCodeAt(0) & 1)) {
             const protocolId = message.charCodeAt(0) >> 1;
             const messageId = message.charCodeAt(1);
@@ -40,7 +43,11 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
                 console.warn(`Received an unknown message (id: ${messageId}) for custom ` +
                     `protocol: ${protocolId}. The message was: ${message}`);
             } else {
-                this._fireMessageCallbacks(protocolId, messageId, sessionId, message.substr(2));
+                this._fireMessageCallbacks(
+                    protocolId, messageId,
+                    sessionId, message.substr(2),
+                    userId, connectionId, connection
+                );
                 directStream.preventCallingMeteorHandler();
             }
         }
@@ -49,13 +56,21 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
     /**
      * Decodes the message and fires callbacks.
      *
-     * @param {number} protocolId - Id of the protocol.
-     * @param {number} messageId  - Id of the message.
-     * @param {string} sessionId  - Meteor's internal session id.
-     * @param {string} rawMessage - The message as it arrived on the socket.
+     * @param {number}  protocolId   - Id of the protocol.
+     * @param {number}  messageId    - Id of the message.
+     * @param {string}  sessionId    - Meteor's internal session id.
+     * @param {string}  rawMessage   - The message as it arrived on the socket.
+     * @param {string=} userId       - User id if available.
+     * @param {Symbol=} connectionId - Id of the additional DDP connection.
+     * @param {Object=} connection   - Reference to DDP connection object.
+
      * @private
      */
-    _fireMessageCallbacks(protocolId, messageId, sessionId, rawMessage) {
+    _fireMessageCallbacks(
+        protocolId, messageId,
+        sessionId, rawMessage,
+        userId, connectionId, connection
+    ) {
         const callbacks = this._customProtocols[protocolId].messages[messageId]._callbacks;
         if (!callbacks.length) return;
         const message = this._customProtocols[protocolId].protocol.decode(
@@ -63,7 +78,8 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
             this.getDefinition(protocolId, messageId),
             rawMessage
         );
-        callbacks.forEach(callback => callback(message, sessionId));
+        callbacks.forEach(callback =>
+            callback(message, sessionId, userId, connectionId, connection));
     }
 
     /**
@@ -94,9 +110,7 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
      */
     registerMessage(protocolId, messageId, definition) {
         if (messageId > 255) {
-            throw new Error(
-                'Message if can not be higher than 255.'
-            );
+            throw new Error('Message if can not be higher than 255.');
         }
         this._customProtocols[protocolId].messages[messageId] = {
             id: messageId,
@@ -131,6 +145,39 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
     }
 
     /**
+     * Removes a callback for a specified message.
+     *
+     * @param {number} protocolId - Unique number representing the protocol.
+     * @param {number} messageId  - Id of the message.
+     * @param {Function} callback - Reference of the function to call when a message arrives.
+     */
+    removeCallback(protocolId, messageId, callback = Function.prototype) {
+        if (!this._customProtocols[protocolId].messages[messageId]) {
+            return;
+        }
+
+        const index =
+            this._customProtocols[protocolId].messages[messageId]._callbacks.indexOf(callback);
+        if (~index) {
+            this._customProtocols[protocolId].messages[messageId]._callbacks.splice(index, 1);
+        }
+    }
+
+    /**
+     * Removes all callbacks for a specified message.
+     *
+     * @param {number} protocolId - Unique number representing the protocol.
+     * @param {number} messageId  - Id of the message.
+     */
+    removeAllCallbacks(protocolId, messageId) {
+        if (!this._customProtocols[protocolId].messages[messageId]) {
+            return;
+        }
+
+        this._customProtocols[protocolId].messages[messageId]._callbacks = [];
+    }
+
+    /**
      * Gets the 16 bit message header which consists of:
      * 0xxx xxx | yyyy yyyy
      * where x is the protocol id and y is the message id.
@@ -147,7 +194,6 @@ CustomProtocolCoreClass = class CustomProtocolCoreClass {
             this._customProtocols[protocolId].messages[messageId].id
         );
     }
-
 };
 
 CustomProtocolCore = new CustomProtocolCoreClass(Meteor.directStream);

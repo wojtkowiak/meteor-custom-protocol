@@ -90,8 +90,7 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
 4. Create `encode` / `decode` methods:
 
     ```javascript
-        // (!)Payload passed is always wrapped in an array.
-        encode(messageId, definition, payload = []}) {
+        encode(messageId, definition, ...payload) {
             return JSON.stringify(payload[0]);
         }
     
@@ -108,13 +107,19 @@ Below is a step by step mini tutorial on how to create a simple protocol yoursel
     
     // on client
     protocol.send(protocol.MY_MESSAGE, { some: 'data' });
+ 
+    // with `DDP.connect` 
+    const ddp = DDP.connect('ip:port');
+    const connectionId = protocol.registerConnection(ddp);
    
     // on server 
     protocol.send(protocol.MY_MESSAGE, { some: 'data' }, 'sessionId');
     
     // register callback to receive the data
-    // sessionId is only provided on server
-    protocol.on(protocol.MY_MESSAGE, (data, sessionId) => { console.log(data) });
+    // * sessionId and userId is only provided on server
+    // * connectionId and connection are only provided if the 
+    //   message came on additional DDP connection
+    protocol.on(protocol.MY_MESSAGE, (data, sessionId, userId, connectionId, connection) => { console.log(data) });
     ```
     
 If you want to send different data and receive them on different callback you have to declare a message for each of them or create a dynamic messages type protocol - [check out below](https://github.com/wojtkowiak/meteor-custom-protocol#protocol-types---declared-or-dynamic-messages). 
@@ -163,7 +168,7 @@ It is just a place to store some information used by your encode/decode methods.
 this._messages[0] = { fields: [ 'field1', 'field2' ]};
 ```
 ```javascript
-encode(messageId, definition, payload = []}) {
+encode(messageId, definition, ...payload) {
     let data = payload[0];
     let encodedMessage = '';
     definition.fields.forEach((field) => {
@@ -232,6 +237,11 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Changelog
  
+ - v4.0.0 
+    - added support for `DDP.connect`
+    - dropped support for `Meteor` below `1.4`
+    - added added `removeCallback` and `removeAllCallbacks` to standard protocol
+    - added `userId` to message callback on server side
  - v3.1.0 - added `removeCallback` and `removeAllCallbacks` to DynamicMessagesProtocol  
  - v3.0.2 - Meteor 1.3.3 compatibility fix.
 
@@ -240,12 +250,8 @@ Here I will keep track of other packages using custom protocols so you can take 
 This package is fully tested and so is the used [meteor-direct-stream-access](https://github.com/wojtkowiak/meteor-direct-stream-access) package.  
 To run the tests, being inside the meteor project that uses this package type:
 
-`meteor test-packages --driver-package=practicalmeteor:mocha omega:custom-protocols`
+`npm run test`
 
 and check out the results in the browser.
 
 *Some tests are failing on second and consecutive runs. This is nothing to worry about.*
-
-### TODO
-
-* [ ] support `DDP.connect`

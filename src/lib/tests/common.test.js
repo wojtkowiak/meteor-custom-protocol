@@ -1,17 +1,18 @@
-const expect = chai.expect;
+import chai from 'ultimate-chai';
+import sinon from 'sinon';
+
+const { expect } = chai;
 
 describe('CustomProtocolCommon', () => {
     describe('#constructor()', () => {
         let instance;
         beforeEach(() => {
             CustomProtocolsIndex.TestProtocol = { id: 3 };
-            instance = new class TestProtocol extends CustomProtocolCommon {
-            };
+            instance = new (class TestProtocol extends CustomProtocolCommon {})();
         });
         it('should set default options', () => {
-            expect(instance._options.messagesDefinition).to.be.equal(
-                instance.protocolTypes.DECLARED_MESSAGES
-            );
+            expect(instance._options.messagesDefinition)
+                .to.be.equal(instance.protocolTypes.DECLARED_MESSAGES);
         });
     });
     describe('#registerProtocol', () => {
@@ -19,8 +20,7 @@ describe('CustomProtocolCommon', () => {
         let stub;
         beforeEach(() => {
             CustomProtocolsIndex.TestProtocol = { id: 3 };
-            instance = new class TestProtocol extends CustomProtocolCommon {
-            };
+            instance = new (class TestProtocol extends CustomProtocolCommon {})();
             stub = sinon.stub(CustomProtocolCore, 'registerProtocol');
         });
         it('should register protocol in core', () => {
@@ -30,16 +30,15 @@ describe('CustomProtocolCommon', () => {
         });
         it('should thrown on id > 127', () => {
             CustomProtocolsIndex.TestProtocol = { id: 128 };
-            instance = new class TestProtocol extends CustomProtocolCommon {};
+            instance = new (class TestProtocol extends CustomProtocolCommon {})();
             expect(instance.registerProtocol.bind(instance, 'TestProtocol')).to.throw(Error, /lower than 127/);
         });
         it('should extend options', () => {
             const options = { testField: 'test' };
             instance.registerProtocol('TestProtocol', options);
             expect(instance._options.testField).to.be.equal(options.testField);
-            expect(instance._options.messagesDefinition).to.be.equal(
-                instance.protocolTypes.DECLARED_MESSAGES
-            );
+            expect(instance._options.messagesDefinition)
+                .to.be.equal(instance.protocolTypes.DECLARED_MESSAGES);
         });
         it('should register message when protocol has dynamic messages', () => {
             const options = {
@@ -57,9 +56,9 @@ describe('CustomProtocolCommon', () => {
     describe('#registerMessages', () => {
         it('should register all messages in core', () => {
             CustomProtocolsIndex.TestProtocol = { id: 3 };
-            const instance = new class TestProtocol extends CustomProtocol {
+            const instance = new (class TestProtocol extends CustomProtocol {
                 constructor() { super(); this.registerProtocol('TestProtocol'); }
-            };
+            })();
             const stub = sinon.stub(CustomProtocolCore, 'registerMessage');
             instance._messages[1] = { field: 'test1' };
             instance._messages[2] = { field: 'test2' };
@@ -73,9 +72,9 @@ describe('CustomProtocolCommon', () => {
     describe('#getEncodedMessage', () => {
         it('should get full message', () => {
             CustomProtocolsIndex.TestProtocol = { id: 3 };
-            const instance = new class TestProtocol extends CustomProtocolCommon {
+            const instance = new (class TestProtocol extends CustomProtocolCommon {
                 encode(msgId, def, ...payload) { if (payload[0] === 'test') return 'test'; return null; }
-            };
+            })();
             const stub = sinon.stub(CustomProtocolCore, 'getHeader');
             stub.returns('header');
             const getDefinition = sinon.stub(CustomProtocolCore, 'getDefinition');

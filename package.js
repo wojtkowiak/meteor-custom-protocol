@@ -1,6 +1,6 @@
 Package.describe({
     name: 'omega:custom-protocol',
-    version: '3.1.0',
+    version: '4.0.0',
     summary: 'Send custom data on the Meteor\'s defaults websocket connection.',
     git: 'https://github.com/wojtkowiak/meteor-custom-protocol',
     documentation: 'README.md'
@@ -19,11 +19,11 @@ Package.registerBuildPlugin({
 });
 
 Package.onUse(function onUse(api) {
-    api.versionsFrom('METEOR@1.2');
+    api.versionsFrom('1.4');
     api.use('isobuild:compiler-plugin@1.0.0');
     api.use('ecmascript');
     api.use('underscore');
-    api.use('omega:direct-stream-access@3.0.2');
+    api.use('omega:direct-stream-access@=4.0.1');
 
     api.addFiles([
         'src/lib/index/index.protocols.index.js',
@@ -41,28 +41,34 @@ Package.onUse(function onUse(api) {
         'src/utils/DynamicMessagesProtocol.js',
         'src/utils/Json.protocol.js',
         'src/utils/Json.protocol'
-        ]);
+    ]);
     api.export('CustomProtocolCore');
     api.export('CustomProtocol');
     api.export('DynamicMessagesProtocol');
     api.export('JsonProtocol');
-    api.export([
-        'CustomProtocolIndexer',
-        'CustomProtocolIndexReader',
-        'CustomProtocolCoreClass',
-        'CustomProtocolsIndex',
-        'CustomProtocolError',
-        'CustomProtocolCommon'
-    ], ['client', 'server'],
-        { testOnly: true });
+    api.export(
+        [
+            'CustomProtocolIndexer',
+            'CustomProtocolIndexReader',
+            'CustomProtocolCoreClass',
+            'CustomProtocolsIndex',
+            'CustomProtocolError',
+            'CustomProtocolCommon'
+        ],
+        ['client', 'server'],
+        { testOnly: true }
+    );
 });
 
 Package.onTest(function onTest(api) {
+    Npm.depends({
+        'ultimate-chai': '4.1.0',
+        sinon: '4.3.0'
+    });
+
     api.use('ecmascript');
     api.use('omega:custom-protocol');
-    api.use('practicalmeteor:mocha');
-    api.use('practicalmeteor:sinon');
-    api.use('omega:dirty-chai');
+    api.use('cultofcoders:mocha');
 
     api.addFiles([
         'src/buildPlugins/tests/indexer.test.js',

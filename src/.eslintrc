@@ -15,6 +15,11 @@
   },
   "rules": {
     "indent": [ 2, 4, { "SwitchCase": 1 } ],
-    "comma-dangle": [ 0 ]
+    "comma-dangle": [ 0 ],
+    "no-underscore-dangle": "off",
+    "no-sequences": "off",
+    "no-param-reassign": "off",
+    "no-bitwise": "off",
+    "class-methods-use-this": "off"
   }
 }
