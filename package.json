@@ -8,15 +8,15 @@
     "gulp-concat": "2.6.1",
     "gulp-load-plugins": "1.5.0",
     "merge-stream": "1.0.1",
-    "eslint-config-airbnb": "16.1.0",
-    "eslint-plugin-jsx-a11y": "6.0.3",
-    "eslint-plugin-react": "7.6.1",
-    "eslint-plugin-import": "2.8.0",
-    "eslint": "4.18.0"
+    "eslint-config-airbnb": "17.1.0",
+    "eslint-plugin-jsx-a11y": "6.2.1",
+    "eslint-plugin-react": "7.12.4",
+    "eslint-plugin-import": "2.16.0",
+    "eslint": "5.16.0"
   },
   "scripts": {
     "docs": "gulp --gulpfile .gulp/gulpfile.js docs",
     "test": "meteor test-packages ./ --driver-package cultofcoders:mocha -p 3050",
-    "release": "meteor publish --release=METEOR@1.5.2.2"
+    "release": "meteor publish --release=METEOR@1.5.4.1"
   }
 }
