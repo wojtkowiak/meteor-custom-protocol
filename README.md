@@ -237,6 +237,8 @@ Here I will keep track of other packages using custom protocols so you can take 
 
 ### Changelog
  
+ - v4.0.2
+    - added support for Meteor 1.8.1
  - v4.0.0 
     - added support for `DDP.connect`
     - dropped support for `Meteor` below `1.4`
