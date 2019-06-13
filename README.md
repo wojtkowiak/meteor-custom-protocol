@@ -24,6 +24,10 @@ Below is a simple example on how to use it:
 
 ### Using JsonProtocol
 
+```
+meteor add omega:json-protocol
+```
+
 First get the singleton instance:
 ```javascript
 let protocol = JsonProtocol.getInstance();
@@ -239,6 +243,7 @@ Here I will keep track of other packages using custom protocols so you can take 
  
  - v4.0.2
     - added support for Meteor 1.8.1
+    - extracted JSON protocol to a separate package
  - v4.0.0 
     - added support for `DDP.connect`
     - dropped support for `Meteor` below `1.4`

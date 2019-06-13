@@ -38,9 +38,7 @@ Package.onUse(function onUse(api) {
         'src/buildPlugins/reader.js'
     ], 'server');
     api.addFiles([
-        'src/utils/DynamicMessagesProtocol.js',
-        'src/utils/Json.protocol.js',
-        'src/utils/Json.protocol'
+        'src/utils/DynamicMessagesProtocol.js'
     ]);
     api.export('CustomProtocolCore');
     api.export('CustomProtocol');
@@ -76,12 +74,10 @@ Package.onTest(function onTest(api) {
         'src/lib/tests/core.test.js',
         'src/lib/tests/common.test.js',
         'src/tests/CustomProtocol.server.test.js',
-        'src/utils/tests/Json_protocol.test.js',
         'src/utils/tests/DynamicMessagesProtocol.test.js'
     ], ['server']);
     api.addFiles([
         'src/tests/CustomProtocol.client.test.js',
-        'src/utils/tests/Json_protocol.test.js',
         'src/utils/tests/DynamicMessagesProtocol.test.js'
     ], ['client']);
 });
