@@ -105,7 +105,7 @@ DynamicMessagesProtocol = class DynamicMessagesProtocol extends CustomProtocol {
                 'type field name with setTypeField method.');
         }
         this._typeObject[this._typeFieldName] = messageType;
-        super.send(0, _.extend(this._typeObject, payload), target, deferred);
+        super.send(0,  Object.assign(this._typeObject, payload), target, deferred);
     }
 };
 

@@ -22,7 +22,6 @@ Package.onUse(function onUse(api) {
     api.versionsFrom('1.4');
     api.use('isobuild:compiler-plugin@1.0.0');
     api.use('ecmascript');
-    api.use('underscore');
     api.use('omega:direct-stream-access@=4.0.3');
 
     api.addFiles([
