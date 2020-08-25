@@ -56,7 +56,7 @@ CustomProtocolCommon = class CustomProtocolCommon {
             throw new Error('Custom protocol must have an this._id lower than 127');
         }
 
-        _.extend(this._options, options);
+        Object.assign(this._options, options);
 
         CustomProtocolCore.registerProtocol(this._id, this._options, this);
 
